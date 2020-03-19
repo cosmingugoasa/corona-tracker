@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a91d47cb-f4e2-4e96-96e9-54ad9d2fe020" name="Default Changelist" comment="" />
+    <list default="true" id="a91d47cb-f4e2-4e96-96e9-54ad9d2fe020" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -18,9 +28,20 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="last_opened_file_path" value="C:/Program Files (x86)/NodeJS/node.exe" />
+    <property name="nodejs_interpreter_path" value="C:/Program Files (x86)/NodeJS/node" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="npm" />
+      <command value="npm install" />
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -32,7 +53,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1584627885898</updated>
-      <workItem from="1584627899451" duration="443000" />
+      <workItem from="1584627899451" duration="1585000" />
+      <workItem from="1584629537236" duration="436000" />
+      <workItem from="1584630544723" duration="139000" />
     </task>
     <servers />
   </component>
@@ -40,13 +63,21 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="740" y="279" key="FileChooserDialogImpl" timestamp="1584628356110">
+    <state x="724" y="255" key="FileChooserDialogImpl" timestamp="1584629311256">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="740" y="279" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1584628356110" />
-    <state x="461" y="167" key="SettingsEditor" timestamp="1584628360777">
+    <state x="724" y="255" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1584629311256" />
+    <state x="30" y="47" width="939" height="716" key="SettingsEditor" timestamp="1584629763888">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="461" y="167" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1584628360777" />
+    <state x="30" y="47" width="939" height="716" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1584629763888" />
+    <state x="322" y="211" key="jetbrains.nodejs.interpreters-dialog" timestamp="1584629299041">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="322" y="211" key="jetbrains.nodejs.interpreters-dialog/0.0.1920.1050@0.0.1920.1050" timestamp="1584629299041" />
+    <state x="143" y="245" width="672" height="677" key="run.anything.popup" timestamp="1584629572272">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="143" y="245" width="672" height="677" key="run.anything.popup/0.0.1920.1050@0.0.1920.1050" timestamp="1584629572272" />
   </component>
 </project>
