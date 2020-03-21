@@ -9,17 +9,21 @@ var url = "https://coronavirus-tracker-api.herokuapp.com/v2/";
 $(document).ready(function () {
     //Get general data
     $.getJSON(url.concat("latest"), function(data){
-        $('#infetti').text(data.latest.confirmed);
-        $('#deceduti').text(data.latest.deaths);
-        $('#guariti').text(data.latest.recovered);
+
+        overallData = data;
+
+        $('#infetti').text(overallData.latest.confirmed);
+        $('#deceduti').text(overallData.latest.deaths);
+        $('#guariti').text(overallData.latest.recovered);
     });
+
 
     //Get location based data
     $.getJSON(url.concat("locations"), function(data){
-
+        locations = data.locations;
     });
 });
-
+/*
 
 //Get latest cases : confirmed, deaths, recovered
 async function getLatest(){
