@@ -5,8 +5,8 @@ async function getLatest(){
     const param = "latest";
     const response = await fetch(url.concat(param));
     const data = await response.json();
-    console.log(data);
-    //return data;
+    //console.log(data);
+    return data;
 }
 //Get all locations : id, country, country_code, coords{}, latest{} without timelines
 async function getLocations(){

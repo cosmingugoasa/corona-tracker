@@ -61,5 +61,25 @@
         <p> © 2020 Cosmin Gugoasa, Cosmin Gabriele Savastre</p>
     </nav>
     <script src="scripts/fetch_api_data.js"></script>
+    <script>
+        //Sbagliati
+       /* const data = getLatest();
+        console.log(data);
+        console.log(getLatest());*/
+
+        (async function () {
+            const data = await getLatest();
+            console.log(data);
+        })();
+
+
+       /* const data = getLatest().then( x => {
+            //si(?)
+            //console.log(x);
+
+            //no(?)
+            return x;
+        });*/
+    </script>
 </body>
 </html>
