@@ -1,13 +1,10 @@
-$(document).ready( () => {
-    window.addEventListener("mousemove", function (e) {
-        x_pos = e.clientX;
-        y_pos = e.clientY;
-    });
+$(document).ready( function() {
+    $( "path" ).hover( function(){
 
-    $( "path" ).hover( () => {
-        $( "path" ).popover({
-            title: "Country Name.",
-            content: "Number of infected.",
+        $(this).popover({
+            title: $(this).attr('id'),
+            content: "Number of infected",
+            container: 'body'
         });
     });
 });

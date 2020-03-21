@@ -10,6 +10,11 @@
 .row{
     justify-content: center;
 }
+/*POPOVER CSS*/
+.popover-header{
+    text-align: center;
+    color: red;
+}
 
 /* MAP CSS */
 /*map-body {
