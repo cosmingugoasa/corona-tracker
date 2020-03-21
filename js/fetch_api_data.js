@@ -1,4 +1,25 @@
+//Array of objects, each object is a location
+var locations = [];
+
+//Single object of data
+var overallData = {};
+
+//API base url
 var url = "https://coronavirus-tracker-api.herokuapp.com/v2/";
+$(document).ready(function () {
+    //Get general data
+    $.getJSON(url.concat("latest"), function(data){
+        $('#infetti').text(data.latest.confirmed);
+        $('#deceduti').text(data.latest.deaths);
+        $('#guariti').text(data.latest.recovered);
+    });
+
+    //Get location based data
+    $.getJSON(url.concat("locations"), function(data){
+
+    });
+});
+
 
 //Get latest cases : confirmed, deaths, recovered
 async function getLatest(){
