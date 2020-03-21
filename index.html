@@ -8,7 +8,7 @@
     <!-- Bootstrap css -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- jQuery, Popper.js,Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <!-- Map JS -->
@@ -35,7 +35,7 @@
                     <p>Infetti</p>
                 </div>
                 <div class="row">
-                    <h4 id="infetti">250.000 +</h4>
+                    <h4 id="infetti"></h4>
                 </div>
             </div>
             <div class="col-4">
@@ -46,7 +46,7 @@
                     <p>Deceduti</p>
                 </div>
                 <div class="row">
-                    <h4 id="morti">9.000 +</h4>
+                    <h4 id="deceduti"></h4>
                 </div>
             </div>
             <div class="col-4">
@@ -57,7 +57,7 @@
                     <p>Guariti</p>
                 </div>
                 <div class="row">
-                    <h4>85.000 +</h4>
+                    <h4 id="guariti"></h4>
                 </div>
             </div>
         </div>
@@ -266,5 +266,7 @@
     <nav class="navbar navbar-light justify-content-center" style="background-color: #e4e4e4">
         <p> © 2020 Cosmin Gugoasa, Cosmin Gabriele Savastre</p>
     </nav>
+    <script src="js/fetch_api_data.js"></script>
+
 </body>
 </html>
