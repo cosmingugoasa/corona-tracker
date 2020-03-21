@@ -35,7 +35,7 @@
                     <p>Infetti</p>
                 </div>
                 <div class="row">
-                    <h4 id="infetti">250.000 +</h4>
+                    <h4 id="infetti"></h4>
                 </div>
             </div>
             <div class="col-4">
@@ -46,7 +46,7 @@
                     <p>Deceduti</p>
                 </div>
                 <div class="row">
-                    <h4 id="morti">9.000 +</h4>
+                    <h4 id="deceduti"></h4>
                 </div>
             </div>
             <div class="col-4">
@@ -57,7 +57,7 @@
                     <p>Guariti</p>
                 </div>
                 <div class="row">
-                    <h4>85.000 +</h4>
+                    <h4 id="guariti"></h4>
                 </div>
             </div>
         </div>
@@ -266,7 +266,7 @@
     <nav class="navbar navbar-light justify-content-center" style="background-color: #e4e4e4">
         <p> © 2020 Cosmin Gugoasa, Cosmin Gabriele Savastre</p>
     </nav>
-    <script src="scripts/fetch_api_data.js"></script>
+    <script src="js/fetch_api_data.js"></script>
     <script>
         //Sbagliati
        /* const data = getLatest();
@@ -275,7 +275,10 @@
 
         (async function () {
             const data = await getLatest();
-            console.log(data);
+            //console.log(data.latest.confirmed);
+            $('#infetti').text(data.latest.confirmed);
+            $('#deceduti').text(data.latest.deaths);
+            $('#guariti').text(data.latest.recovered);
         })();
 
 
