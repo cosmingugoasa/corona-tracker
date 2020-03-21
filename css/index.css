@@ -1,3 +1,7 @@
+body{
+    background-color: #555555;
+}
+
 .main-counter{
     margin-top: 50px;
     margin-bottom: 25px;
@@ -13,7 +17,12 @@
 /*POPOVER CSS*/
 .popover-header{
     text-align: center;
-    color: red;
+    color: forestgreen;
+}
+
+.popover-body{
+    text-align: center;
+    color: darkblue;
 }
 
 /* MAP CSS */
@@ -35,5 +44,5 @@ path {
     cursor: pointer;
 }
 path:hover {
-    fill: antiquewhite;
+    fill: mediumaquamarine;
 }

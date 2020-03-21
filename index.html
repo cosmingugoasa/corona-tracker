@@ -16,16 +16,18 @@
 </head>
 <body>
     <nav class="navbar navbar-light bg-light justify-content-between">
-        <a class="navbar-brand">CoronaTracker</a>
+        <a class="navbar-brand">
+            <img class="img-fluid" src="media/logo.png" height="75px" width="350px">
+        </a>
         <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <input class="form-control mr-sm-2" type="search" placeholder="Insert country name..." style="font-style:italic">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
     </nav>
     <!-- Main Counter -->
     <div class="container main-counter">
         <div class="row">
-            <div class="col-4" style="background-color: lawngreen">
+            <div class="col-4">
                 <div class="row">
                     <img src="media/infected.png">
                 </div>
@@ -36,7 +38,7 @@
                     <h4 id="infetti">250.000 +</h4>
                 </div>
             </div>
-            <div class="col-4" style="background-color: dimgrey; text-align: center">
+            <div class="col-4">
                 <div class="row">
                     <img src="media/death.png">
                 </div>
@@ -47,7 +49,7 @@
                     <h4 id="morti">9.000 +</h4>
                 </div>
             </div>
-            <div class="col-4" style="background-color: darkorange; text-align: center">
+            <div class="col-4">
                 <div class="row">
                     <img src="media/heart.png">
                 </div>
@@ -62,7 +64,7 @@
     </div>
 
     <!-- Map -->
-    <div class="container map-body" style="background-color: lightgrey; color: white">
+    <div class="container map-body">
         <div class="row">
             <svg viewBox="0 0 1009 652">
                 <path class="country" id="AE" d="M619.87,393.72L620.37,393.57L620.48,394.41L622.67,393.93L624.99,394.01L626.68,394.1L628.6,392.03L630.7,390.05L632.47,388.15L633,389.2L633.38,391.64L631.95,391.65L631.72,393.65L632.22,394.07L630.95,394.67L630.94,395.92L630.12,397.18L630.05,398.39L629.48,399.03L621.06,397.51L619.98,394.43z" data-trigger="hover"  data-toggle="popover"></path>
