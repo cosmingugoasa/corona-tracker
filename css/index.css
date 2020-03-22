@@ -1,0 +1,48 @@
+body{
+    background-color: #555555;
+}
+
+.main-counter{
+    margin-top: 50px;
+    margin-bottom: 25px;
+}
+
+.map-body{
+    margin-bottom: 50px;
+}
+
+.row{
+    justify-content: center;
+}
+/*POPOVER CSS*/
+.popover-header{
+    text-align: center;
+    color: forestgreen;
+}
+
+.popover-body{
+    text-align: center;
+    color: darkblue;
+}
+
+/* MAP CSS */
+/*map-body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #222;
+    overflow: hidden;
+}*/
+svg {
+    width: 90vw;
+    height: 65vh;
+}
+path {
+    fill: #555;
+    cursor: pointer;
+}
+path:hover {
+    fill: mediumaquamarine;
+}

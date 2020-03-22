@@ -3,8 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="a91d47cb-f4e2-4e96-96e9-54ad9d2fe020" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+<<<<<<< HEAD
+      <change beforePath="$PROJECT_DIR$/scripts/fetch_api_data.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/fetch_api_data.js" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/js/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/map.js" afterDir="false" />
+>>>>>>> develop
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,6 +21,11 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+<<<<<<< HEAD
+=======
+        <option value="CSS File" />
+>>>>>>> develop
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -21,7 +33,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1ZLolE29PmwNRXVsTACMQ2zfuGt" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+<<<<<<< HEAD
+    <ConfirmationsSetting value="2" id="Add" />
+=======
+    <ConfirmationsSetting value="1" id="Add" />
+>>>>>>> develop
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -33,14 +51,42 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="C:/Program Files (x86)/NodeJS/node.exe" />
+<<<<<<< HEAD
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path" value="node" />
+=======
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path" value="C:/Program Files (x86)/NodeJS/node" />
+>>>>>>> develop
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\cosmi\Documents\Università\tecnologie_internet\corona-tracker\js" />
+    </key>
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="npm" />
       <command value="npm install" />
+    </option>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
     </option>
   </component>
   <component name="RunManager">
@@ -66,11 +112,29 @@
       <workItem from="1584627899451" duration="1585000" />
       <workItem from="1584629537236" duration="436000" />
       <workItem from="1584630544723" duration="5513000" />
+<<<<<<< HEAD
+      <workItem from="1584718606923" duration="4280000" />
+=======
+      <workItem from="1584698261004" duration="7985000" />
+>>>>>>> develop
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="WindowStateProjectService">
     <state x="0" y="183" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584633903281">
