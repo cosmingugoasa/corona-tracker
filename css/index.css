@@ -25,6 +25,24 @@ body{
     color: darkblue;
 }
 
+.p-infected{
+    color: darkred;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.p-deaths{
+    color: darkslategrey;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.p-recovered{
+    color: forestgreen;
+    font-style: italic;
+    font-weight: bold;
+}
+
 /* LOADING OVERLAY */
 .loader-wrapper {
     width: 100%;
