@@ -3,16 +3,23 @@ $(document).ready( function() {
     $( "path" ).hover( function(){
         //get country alpha2 code
         var country_hovered = $(this).attr('id');
+        var infected, deaths, recovered;
         //search for complete country name
         locations.forEach( function (location) {
             if( country_hovered == location.country_code){
                 country_hovered = location.country;
+                infected = location.latest.confirmed;
+                deaths = location.latest.deaths;
+                recovered = location.latest.recovered;
             }
         });
         //open popover with complete country name
         $(this).popover({
+            html: true,
             title: country_hovered,
-            content: "Click to see the counter for this country.",
+            content: "<span class='popover-infected'>Infected : </span>".concat(infected)
+                .concat("<br><span class='popover-deaths'>Deaths : </span>").concat(deaths)
+                .concat("<br><span class='popover-recovered'>Recovered : </span>").concat(recovered),
             container: 'body'
         });
     });
@@ -21,6 +28,7 @@ $(document).ready( function() {
     $( "path" ).click( function () {
         //get clicked country alpha2 code
         var country_clicked = $(this).attr('id');
+        console.log(country_clicked);
         //search for clicked country data
         locations.forEach( function (location) {
             if( country_clicked == location.country_code){

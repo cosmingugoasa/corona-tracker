@@ -11,6 +11,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
     <!-- Map JS -->
     <script src="js/map.js"></script>
     <script src="js/search_country.js"></script>
@@ -252,16 +253,16 @@
     </div>
 
     <!-- Charts -->
-    <div class="container" style="background-color: hotpink">
+    <div class="container">
         <div class="row">
-            <div class="col-4" style="background-color: darkred; text-align: center">
-                <h3>Chart 1</h3>
+            <div class="col-4">
+                <canvas id="firstChart"></canvas>
             </div>
-            <div class="col-4" style="background-color: purple; text-align: center">
-                <h3>Chart 2</h3>
+            <div class="col-4">
+                <canvas id="secondChart"></canvas>
             </div>
-            <div class="col-4" style="background-color: yellow; text-align: center">
-                <h3>Chart 3</h3>
+            <div class="col-4">
+                <canvas id="thirdChart"></canvas>
             </div>
         </div>
     </div>
@@ -270,7 +271,12 @@
     <nav class="navbar navbar-light justify-content-center" style="background-color: #e4e4e4">
         <p> © 2020 Cosmin Gugoasa, Cosmin Gabriele Savastre</p>
     </nav>
-    <script src="js/fetch_api_data.js"></script>
 
+    <!-- Loading Overlay -->
+    <div class="loader-wrapper">
+        <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+
+    <script src="js/fetch_api_data.js"></script>
 </body>
 </html>
