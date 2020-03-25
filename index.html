@@ -17,9 +17,6 @@
     <script src="js/search_country.js"></script>
 </head>
 <body>
-    <div class="loader-wrapper">
-        <span class="loader"><span class="loader-inner"></span></span>
-    </div>
     <nav class="navbar navbar-light bg-light justify-content-between">
         <a class="navbar-brand" href="index.html">
             <img class="img-fluid" src="media/logo.png" height="75px" width="350px">
@@ -274,7 +271,12 @@
     <nav class="navbar navbar-light justify-content-center" style="background-color: #e4e4e4">
         <p> © 2020 Cosmin Gugoasa, Cosmin Gabriele Savastre</p>
     </nav>
-    <script src="js/fetch_api_data.js"></script>
 
+    <!-- Loading Overlay -->
+    <div class="loader-wrapper">
+        <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+
+    <script src="js/fetch_api_data.js"></script>
 </body>
 </html>

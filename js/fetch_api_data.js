@@ -86,7 +86,7 @@ $(document).ready(function () {
     $.getJSON(url.concat("locations?timelines=1"), function(data){
         console.log(data);
 
-        locations = data.locations.sort(function (a, b) {
+        /*locations = data.locations.sort(function (a, b) {
             if (a.country_code < b.country_code){
                 return -1;
             } else if( a.country_code > b.country_code){
@@ -94,14 +94,14 @@ $(document).ready(function () {
             }else{
                 return 0;
             }
-        });
+        });*/
     //TODO: Continue with province grouping
         //console.log(locations);
 
-       /*locations = data.locations.sort(function (a, b) {
+       locations = data.locations.sort(function (a, b) {
             //Order descending
             return (parseInt(a.latest.confirmed) - parseInt(b.latest.confirmed)) * -1;
-        });*/
+       });
 
         //Get cases info from top 5 infected countries
         locations.slice(0, 5).map(location => {
@@ -146,14 +146,13 @@ $(document).ready(function () {
                 title:{
                     display: true,
                     text: 'Classifica dei contagi'
+                },
+                animation: {
+                    onComplete: function () {
+                        $(".loader-wrapper").fadeOut("slow");
+                    }
                 }
             }
         });
     });
-
-    //Loading overlay
-    $(window).on("load",function(){
-        $(".loader-wrapper").fadeOut("slow");
-    });
-
 });
