@@ -46,7 +46,6 @@ $(document).ready(function () {
     $.getJSON(url.concat("latest"), function(data){
 
         overallData = data.latest;
-        //console.log(overallData);
 
         $('#infetti').text(overallData.confirmed);
         $('#deceduti').text(overallData.deaths);
@@ -81,12 +80,9 @@ $(document).ready(function () {
         });
     });
 
-    //TODO: Province grouping
     //Get location based data
     $.getJSON(url.concat("locations?timelines=1"), function(data){
-        console.log(data);
-
-        /*locations = data.locations.sort(function (a, b) {
+        locations = data.locations.sort(function (a, b) {
             if (a.country_code < b.country_code){
                 return -1;
             } else if( a.country_code > b.country_code){
@@ -94,14 +90,15 @@ $(document).ready(function () {
             }else{
                 return 0;
             }
-        });*/
-    //TODO: Continue with province grouping
-        //console.log(locations);
+        });
+        locations = groupByProvince(locations);
 
-       locations = data.locations.sort(function (a, b) {
+        locations = locations.sort(function (a, b) {
             //Order descending
             return (parseInt(a.latest.confirmed) - parseInt(b.latest.confirmed)) * -1;
-       });
+        });
+
+        console.log(locations);
 
         //Get cases info from top 5 infected countries
         locations.slice(0, 5).map(location => {
@@ -156,3 +153,33 @@ $(document).ready(function () {
         });
     });
 });
+
+function groupByProvince(locations) {
+    //Array of all the provinces grouped into their countries
+    let groupedLocations = [];
+    locations.forEach(location =>{
+        let pos = -1;
+        //Look in the array to see if there's already a province with the country code of the location
+        if(groupedLocations.length > 0){
+            let cont = 0;
+            groupedLocations.forEach(loc =>{
+                if(loc.country_code === location.country_code){
+                    pos = cont;
+                }
+                cont++;
+            });
+        }
+
+        //Add the latest data to the location saved in the array
+        if(pos !== -1){
+            groupedLocations[pos].latest.confirmed = parseInt(groupedLocations[pos].latest.confirmed) + parseInt(location.latest.confirmed);
+            groupedLocations[pos].latest.deaths = parseInt(groupedLocations[pos].latest.deaths) + parseInt(location.latest.deaths);
+            groupedLocations[pos].latest.recovered = parseInt(groupedLocations[pos].latest.recovered) + parseInt(location.latest.recovered);
+        }else{
+            //Else add to the groupedLocation array as a new location
+            groupedLocations.push(location);
+        }
+    });
+    // console.log(groupedLocations);
+    return groupedLocations;
+}
