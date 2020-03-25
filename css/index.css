@@ -25,19 +25,19 @@ body{
     color: darkblue;
 }
 
-.p-infected{
+.popover-infected{
     color: darkred;
     font-style: italic;
     font-weight: bold;
 }
 
-.p-deaths{
+.popover-deaths{
     color: darkslategrey;
     font-style: italic;
     font-weight: bold;
 }
 
-.p-recovered{
+.popover-recovered{
     color: forestgreen;
     font-style: italic;
     font-weight: bold;
