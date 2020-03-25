@@ -42,6 +42,7 @@ var thirdGraphData = [];
 var url = "https://coronavirus-tracker-api.herokuapp.com/v2/";
 $(document).ready(function () {
     //Get general data
+    //TODO: Remove this call and get latest data from the api call from all locations
     $.getJSON(url.concat("latest"), function(data){
 
         overallData = data.latest;
@@ -83,10 +84,24 @@ $(document).ready(function () {
     //TODO: Province grouping
     //Get location based data
     $.getJSON(url.concat("locations?timelines=1"), function(data){
+        console.log(data);
+
         locations = data.locations.sort(function (a, b) {
+            if (a.country_code < b.country_code){
+                return -1;
+            } else if( a.country_code > b.country_code){
+                return 1;
+            }else{
+                return 0;
+            }
+        });
+    //TODO: Continue with province grouping
+        //console.log(locations);
+
+       /*locations = data.locations.sort(function (a, b) {
             //Order descending
             return (parseInt(a.latest.confirmed) - parseInt(b.latest.confirmed)) * -1;
-        });
+        });*/
 
         //Get cases info from top 5 infected countries
         locations.slice(0, 5).map(location => {
