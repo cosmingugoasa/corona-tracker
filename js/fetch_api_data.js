@@ -22,4 +22,10 @@ $(document).ready(function () {
     $.getJSON(url.concat("locations"), function(data){
         locations = data.locations;
     });
+
+    //Loading overlay
+    $(window).on("load",function(){
+        $(".loader-wrapper").fadeOut("slow");
+    });
+
 });
