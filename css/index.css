@@ -138,3 +138,9 @@ path {
 path:hover {
     fill: mediumaquamarine;
 }
+
+/* CHARTS CSS */
+.chart-container{
+    width: auto;
+    height: 225px;
+}
