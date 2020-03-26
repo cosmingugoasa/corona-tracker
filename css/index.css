@@ -7,6 +7,11 @@ body{
     margin-bottom: 25px;
 }
 
+.img-counter{
+    height: 40px;
+    width: 40px;
+}
+
 .map-body{
     margin-bottom: 50px;
 }
