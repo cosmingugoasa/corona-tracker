@@ -7,8 +7,6 @@ let locations = [];
 //Single object of data
 let overallData = {};
 
-//TODO: Load charts in another js file
-
 //First chart (Pie chart with global stats or stats of selected country)
 const fctx = document.getElementById('firstChart').getContext('2d');
 
@@ -38,7 +36,15 @@ let secondGraphData = {
 };
 
 //Timeline of the country with the most confirmed cases
-let thirdGraphData = [];
+let thirdGraphData = {
+    'timestamps': [],
+    //Number of confirmed cases per country
+    'confirmed': [],
+    //Number of deaths per country
+    'deaths': [],
+    //Number of recovered per country
+    'recovered': []
+};
 
 $(document).ready(function () {
 
@@ -70,6 +76,7 @@ $(document).ready(function () {
                 responsive: true,
                 maintainAspectRatio: false,
                 legend:{
+                    display: false,
                     position: 'bottom'
                 },
                 title:{
@@ -126,11 +133,11 @@ $(document).ready(function () {
                     },
                 ],
             },
-
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 legend:{
+                    display: true,
                     position: 'bottom'
                 },
                 title:{
@@ -139,8 +146,67 @@ $(document).ready(function () {
                 }
             }
         });
+
+        const topCountry = locations[0];
+        console.log(topCountry);
+        setThirdGraphData(topCountry.timelines);
+
+        //Init third graph
+        var thirdChart = new Chart(tctx,{
+            type: 'line',
+            data:{
+                labels:thirdGraphData.timestamps,
+                datasets: [
+                    //Confirmed
+                    {
+                        label: labels[0],
+                        data:thirdGraphData.confirmed,
+                        backgroundColor: colors["confirmed"]
+                    },
+                    //Deaths
+                    {
+                        label: labels[1],
+                        data:thirdGraphData.deaths,
+                        backgroundColor: colors["deaths"]
+                    },
+                    //Recovered
+                    {
+                        label: labels[2],
+                        data:thirdGraphData.recovered,
+                        backgroundColor: colors["recovered"]
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend:{
+                    display: false,
+                    position: 'bottom'
+                },
+                title:{
+                    display: true,
+                    text: 'Cronologia casi per '+topCountry.country
+                }
+            }
+        });
     });
 });
+
+function setThirdGraphData(timelines){
+    //Key,value pair array
+    let timeLinesSaved = false;
+    $.each(timelines, function (key, cases) {
+        $.each(cases.timeline, function (time, number) {
+            if(!timeLinesSaved){
+                thirdGraphData["timestamps"].push(time.split("T")[0]);
+            }
+            thirdGraphData[key].push(number);
+        });
+        timeLinesSaved = true;
+    });
+    console.log(thirdGraphData);
+}
 
 function groupByProvince(locations) {
     //Array of all the provinces grouped into their countries
