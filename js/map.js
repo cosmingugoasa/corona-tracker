@@ -1,5 +1,8 @@
 $(document).ready( function() {
 
+    //enable pan&zoom
+    var panZoomTiger = svgPanZoom('#svg');
+
     //hover functionalities
     $( "path" ).hover( function(){
         //get country alpha2 code
@@ -14,10 +17,6 @@ $(document).ready( function() {
                 infected = location.latest.confirmed;
                 deaths = location.latest.deaths;
                 recovered = location.latest.recovered;
-            }else{
-                infected = "No data available.";
-                deaths = "No data available.";
-                recovered = "No data available.";
             }
         });
 
