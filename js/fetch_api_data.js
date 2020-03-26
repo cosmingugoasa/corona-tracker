@@ -1,31 +1,32 @@
+//API base url
+const url = "https://coronavirus-tracker-api.herokuapp.com/v2/";
+
 //Array of objects, each object is a location
-var locations = [];
+let locations = [];
 
 //Single object of data
-var overallData = {};
+let overallData = {};
 
 //TODO: Load charts in another js file
 
 //First chart (Pie chart with global stats or stats of selected country)
-var fctx = document.getElementById('firstChart').getContext('2d');
+const fctx = document.getElementById('firstChart').getContext('2d');
 
 //Second chart(Horizontal bar chart with top 5 infected countries)
-var sctx = document.getElementById('secondChart').getContext('2d');
+const sctx = document.getElementById('secondChart').getContext('2d');
 
 //Third chart(Line chart with timeline of most infected country or selected country)
-var tctx = document.getElementById('thirdChart').getContext('2d');
+const tctx = document.getElementById('thirdChart').getContext('2d');
 
-//TODO: Use associative array (Confirmed -> red, deaths -> grey, etc...)
-var colors = ['Red', 'Grey', 'Green'];
+const colors = {'confirmed': 'Red', 'deaths': 'Grey', 'recovered': 'Green'};
 
-var labels = ['Confermati', 'Decessi', 'Guariti'];
-
-//TODO: Find another way or place to initialize these arrays
+const labels = ['Confermati', 'Decessi', 'Guariti'];
 
 //Total numbers of confirmed, deaths and recovered
-var firstGraphData = [];
+let firstGraphData = [];
 
-var secondGraphData = {
+//Top countries by the total number of confirmed cases
+let secondGraphData = {
     //Names of the countries with most confirmed
     countriesLabels: [],
     //Number of confirmed cases per country
@@ -36,11 +37,11 @@ var secondGraphData = {
     recovered: []
 };
 
-var thirdGraphData = [];
+//Timeline of the country with the most confirmed cases
+let thirdGraphData = [];
 
-//API base url
-var url = "https://coronavirus-tracker-api.herokuapp.com/v2/";
 $(document).ready(function () {
+
     //Get location based data
     $.getJSON(url.concat("locations?timelines=1"), function(data){
 
@@ -60,7 +61,7 @@ $(document).ready(function () {
             data:{
                 datasets: [{
                     data: firstGraphData,
-                    backgroundColor: colors
+                    backgroundColor:[colors["confirmed"],colors["deaths"],colors["recovered"]]
                 }],
                 labels: labels
             },
@@ -102,8 +103,6 @@ $(document).ready(function () {
             secondGraphData.recovered.push(parseInt(location.latest.recovered));
         });
 
-        //console.log(secondGraphData);
-
         //Init second graph
         var secondChart = new Chart(sctx,{
             type: 'horizontalBar',
@@ -113,17 +112,17 @@ $(document).ready(function () {
                     {
                         label: labels[0],
                         data: secondGraphData.confirmed,
-                        backgroundColor: colors[0],
+                        backgroundColor: colors["confirmed"],
                     },
                     {
                         label: labels[1],
                         data: secondGraphData.deaths,
-                        backgroundColor: colors[1],
+                        backgroundColor: colors["deaths"],
                     },
                     {
                         label: labels[2],
                         data: secondGraphData.recovered,
-                        backgroundColor: colors[2],
+                        backgroundColor: colors["recovered"],
                     },
                 ],
             },
