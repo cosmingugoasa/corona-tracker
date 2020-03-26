@@ -41,9 +41,8 @@ var thirdGraphData = [];
 //API base url
 var url = "https://coronavirus-tracker-api.herokuapp.com/v2/";
 $(document).ready(function () {
-    //Get general data
-    //TODO: Remove this call and get latest data from the api call from all locations
-    $.getJSON(url.concat("latest"), function(data){
+    //Get location based data
+    $.getJSON(url.concat("locations?timelines=1"), function(data){
 
         overallData = data.latest;
 
@@ -57,31 +56,28 @@ $(document).ready(function () {
 
         //Init first graph
         var firstChart = new Chart(fctx,{
-           type: 'pie',
-           data:{
-               datasets: [{
-                   data: firstGraphData,
-                   backgroundColor: colors
-               }],
-               labels: labels
-           },
+            type: 'pie',
+            data:{
+                datasets: [{
+                    data: firstGraphData,
+                    backgroundColor: colors
+                }],
+                labels: labels
+            },
 
             options: {
-               responsive: true,
-               maintainAspectRatio: false,
-               legend:{
-                   position: 'bottom'
-               },
-               title:{
-                   display: true,
-                   text: 'Casi globali'
-               }
+                responsive: true,
+                maintainAspectRatio: false,
+                legend:{
+                    position: 'bottom'
+                },
+                title:{
+                    display: true,
+                    text: 'Casi globali'
+                }
             }
         });
-    });
 
-    //Get location based data
-    $.getJSON(url.concat("locations?timelines=1"), function(data){
         locations = data.locations.sort(function (a, b) {
             if (a.country_code < b.country_code){
                 return -1;
@@ -97,8 +93,6 @@ $(document).ready(function () {
             //Order descending
             return (parseInt(a.latest.confirmed) - parseInt(b.latest.confirmed)) * -1;
         });
-
-        console.log(locations);
 
         //Get cases info from top 5 infected countries
         locations.slice(0, 5).map(location => {
