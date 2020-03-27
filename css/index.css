@@ -19,6 +19,12 @@ body{
 .row{
     justify-content: center;
 }
+
+.footer{
+    background-color: #e4e4e4;
+    font-style: italic;
+    margin-top: 20px;
+}
 /*POPOVER CSS*/
 .popover-header{
     text-align: center;
