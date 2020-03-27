@@ -1,18 +1,18 @@
 $(document).ready(function () {
     //disable button (input field empty)
-    $( '#search_button' ).attr('disabled', true);
+    $( '#search-button' ).attr('disabled', true);
 
     //enable button only if input field is not empty
     $( '#input' ).keyup( function () {
         if($(this).val().length == 0){
-            $( '#search_button' ).attr('disabled', true);
+            $( '#search-button' ).attr('disabled', true);
         }else{
-            $( '#search_button' ).attr('disabled', false);
+            $( '#search-button' ).attr('disabled', false);
         }
     });
 
     //search country by full name, and display info
-    $( '#search_button' ).click( function () {
+    $( '#search-button' ).click( function () {
         var input = $('#input').val();
         locations.forEach( function (location) {
             if( input == location.country){
@@ -23,4 +23,17 @@ $(document).ready(function () {
             }
         });
     })
+
+    /*SUBSCRIBE BUTTON*/
+    //disable button (input field empty)
+    $( '#sub-button' ).attr('disabled', true);
+
+    //enable button only if input field is not empty
+    $( '#email' ).keyup( function () {
+        if($(this).val().length == 0){
+            $( '#sub-button' ).attr('disabled', true);
+        }else{
+            $( '#sub-button' ).attr('disabled', false);
+        }
+    });
 });
