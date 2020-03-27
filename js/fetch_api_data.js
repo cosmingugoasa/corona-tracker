@@ -36,15 +36,15 @@ let secondGraphData = {
 };
 
 //Timeline of the country with the most confirmed cases
-let thirdGraphData = {
-    'timestamps': [],
-    //Number of confirmed cases per country
-    'confirmed': [],
-    //Number of deaths per country
-    'deaths': [],
-    //Number of recovered per country
-    'recovered': []
-};
+// let thirdGraphData = {
+//     //'timestamp': [confirmed, deaths, recovered],
+//     //'timestamp': [confirmed, deaths, recovered],
+//     //'timestamp': [confirmed, deaths, recovered],
+// };
+
+var timestamps = [];
+
+var thirdGraphData = {};
 
 $(document).ready(function () {
 
@@ -147,67 +147,227 @@ $(document).ready(function () {
             }
         });
 
+        //TODO : Fix waiting for getJSON to finish
         const topCountry = locations[0];
-        console.log(topCountry);
-        setThirdGraphData(topCountry.timelines);
 
-        //Init third graph
-        var thirdChart = new Chart(tctx,{
-            type: 'line',
-            data:{
-                labels:thirdGraphData.timestamps,
-                datasets: [
-                    //Confirmed
-                    {
-                        label: labels[0],
-                        data:thirdGraphData.confirmed,
-                        backgroundColor: colors["confirmed"]
-                    },
-                    //Deaths
-                    {
-                        label: labels[1],
-                        data:thirdGraphData.deaths,
-                        backgroundColor: colors["deaths"]
-                    },
-                    //Recovered
-                    {
-                        label: labels[2],
-                        data:thirdGraphData.recovered,
-                        backgroundColor: colors["recovered"]
-                    },
-                ],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend:{
-                    display: false,
-                    position: 'bottom'
+        // setThirdGraphData(topCountry.country_code).then(function (returnedData) {
+        //     thirdGraphData = returnedData;
+        //     console.log("Main")
+        //     console.log(returnedData);
+        //     console.log(thirdGraphData);
+        //     console.log(thirdGraphData["2020-01-22"]);
+        // });
+
+        thirdGraphData = setThirdGraphData(topCountry.country_code);
+
+        setTimeout(function()
+        {
+            console.log(thirdGraphData);
+            let confirmed =[];
+            let deaths = [];
+            let recovered = [];
+            $.each(thirdGraphData, function (key, value) {
+                confirmed.push(value[0]);
+                deaths.push(value[1]);
+                recovered.push(value[2]);
+            });
+            var thirdChart = new Chart(tctx,{
+                type: 'line',
+                data:{
+                    labels:Object.keys(thirdGraphData),
+                    datasets: [
+                        //Confirmed
+                        {
+                            label: labels[0],
+                            data:confirmed,
+                            backgroundColor: colors["confirmed"]
+                        },
+                        //Deaths
+                        {
+                            label: labels[1],
+                            data:deaths,
+                            backgroundColor: colors["deaths"]
+                        },
+                        //Recovered
+                        {
+                            label: labels[2],
+                            data:recovered,
+                            backgroundColor: colors["recovered"]
+                        },
+                    ],
                 },
-                title:{
-                    display: true,
-                    text: 'Cronologia casi per '+topCountry.country
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend:{
+                        display: false,
+                        position: 'bottom'
+                    },
+                    title:{
+                        display: true,
+                        text: 'Cronologia casi per '+topCountry.country
+                    }
                 }
-            }
-        });
+            });
+        }, 200);
+
+        // setThirdGraphData(topCountry.country_code).then(result =>{
+        //     var thirdGraphData = result;
+        //     console.log(thirdGraphData["2020-01-22"]);
+        //     //Init third graph
+        //     var thirdChart = new Chart(tctx,{
+        //         type: 'line',
+        //         data:{
+        //             labels:Object.keys(thirdGraphData),
+        //             datasets: [
+        //                 //Confirmed
+        //                 {
+        //                     label: labels[0],
+        //                     data:thirdGraphData.confirmed,
+        //                     backgroundColor: colors["confirmed"]
+        //                 },
+        //                 //Deaths
+        //                 {
+        //                     label: labels[1],
+        //                     data:thirdGraphData.deaths,
+        //                     backgroundColor: colors["deaths"]
+        //                 },
+        //                 //Recovered
+        //                 {
+        //                     label: labels[2],
+        //                     data:thirdGraphData.recovered,
+        //                     backgroundColor: colors["recovered"]
+        //                 },
+        //             ],
+        //         },
+        //         options: {
+        //             responsive: true,
+        //             maintainAspectRatio: false,
+        //             legend:{
+        //                 display: false,
+        //                 position: 'bottom'
+        //             },
+        //             title:{
+        //                 display: true,
+        //                 text: 'Cronologia casi per '+topCountry.country
+        //             }
+        //         }
+        //     });
+        // });
+        // var thirdChart = new Chart(tctx,{
+        //     type: 'line',
+        //     data:{
+        //         labels:Object.keys(thirdGraphData),
+        //         datasets: [
+        //             //Confirmed
+        //             {
+        //                 label: labels[0],
+        //                 data:thirdGraphData.confirmed,
+        //                 backgroundColor: colors["confirmed"]
+        //             },
+        //             //Deaths
+        //             {
+        //                 label: labels[1],
+        //                 data:thirdGraphData.deaths,
+        //                 backgroundColor: colors["deaths"]
+        //             },
+        //             //Recovered
+        //             {
+        //                 label: labels[2],
+        //                 data:thirdGraphData.recovered,
+        //                 backgroundColor: colors["recovered"]
+        //             },
+        //         ],
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false,
+        //         legend:{
+        //             display: false,
+        //             position: 'bottom'
+        //         },
+        //         title:{
+        //             display: true,
+        //             text: 'Cronologia casi per '+topCountry.country
+        //         }
+        //     }
+        // });
     });
 });
 
-function setThirdGraphData(timelines){
-    //Key,value pair array
-    let timeLinesSaved = false;
-    $.each(timelines, function (key, cases) {
-        $.each(cases.timeline, function (time, number) {
-            if(!timeLinesSaved){
-                thirdGraphData["timestamps"].push(time.split("T")[0]);
-            }
-            thirdGraphData[key].push(number);
+// function setThirdGraphData(countryCode) {
+//
+//     //Get all provinces IDs that have the country code
+//     return $.getJSON(url.concat("locations?country_code="+countryCode)).then(function (provinces) {
+//         let data = {};
+//         //For every province in the country
+//         $.each(provinces.locations, function(index, province){
+//             //Fetch the province data (which includes the timelines)
+//             return $.getJSON(url.concat("locations/"+province.id)).then(function(locationObj){
+//                 //console.log(locationObj);
+//                 //Loop through the different timelines (confirmed timeline, deaths timeline, recovered timeline)
+//                 $.each(locationObj.location.timelines, function (type, timelineObj) {
+//                     $.each(timelineObj.timeline, function (time, cases) {
+//                         time = time.split("T")[0];
+//                         if (typeof data[time] === 'undefined'){
+//                             //Insert new timeline "node" with 0 confirmed, 0 deaths, 0 recovered
+//                             data[time] = [0,0,0];
+//                             timestamps.push(time);
+//                         }
+//                         switch (type) {
+//                             case "confirmed": data[time][0] += parseInt(cases);
+//                                 break;
+//                             case "deaths": data[time][1] += parseInt(cases);
+//                                 break;
+//                             case "recovered": data[time][2] += parseInt(cases);
+//                                 break;
+//                         }
+//                     });
+//                 });
+//             });
+//         });
+//         console.log(data);
+//         thirdGraphData = data;
+//         return data;
+//     });
+//
+// }
+
+function setThirdGraphData(countryCode) {
+    let data = {};
+    //Get all provinces IDs that have the country code
+    $.getJSON(url.concat("locations?country_code="+countryCode), function (provinces) {
+        //For every province in the country
+        $.each(provinces.locations, function(index, province){
+            //Fetch the province data (which includes the timelines)
+            $.getJSON(url.concat("locations/"+province.id), function(locationObj){
+                //console.log(locationObj);
+                //Loop through the different timelines (confirmed timeline, deaths timeline, recovered timeline)
+                $.each(locationObj.location.timelines, function (type, timelineObj) {
+                    $.each(timelineObj.timeline, function (time, cases) {
+                        time = time.split("T")[0];
+                        if (typeof data[time] === 'undefined'){
+                            //Insert new timeline "node" with 0 confirmed, 0 deaths, 0 recovered
+                            data[time] = [0,0,0];
+                            timestamps.push(time);
+                        }
+                        switch (type) {
+                            case "confirmed": data[time][0] += parseInt(cases);
+                                break;
+                            case "deaths": data[time][1] += parseInt(cases);
+                                break;
+                            case "recovered": data[time][2] += parseInt(cases);
+                                break;
+                        }
+                    });
+                });
+            });
         });
-        timeLinesSaved = true;
     });
-    console.log(thirdGraphData);
+    return data;
 }
 
+//TODO: Improve performance by deleting array elements after looping through them
 function groupByProvince(locations) {
     //Array of all the provinces grouped into their countries
     let groupedLocations = [];
