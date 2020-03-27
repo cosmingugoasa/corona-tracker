@@ -16,5 +16,5 @@ Shows data inherent to the coronavirus spread with an interactive map which can 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://it.wikipedia.org/wiki/Licenza_MIT) for details
+This project is licensed under the MIT License - see the [LICENSE](https://it.wikipedia.org/wiki/Licenza_MIT) for details
 
