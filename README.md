@@ -1,4 +1,4 @@
-# Corona Tracker
+# Corona Tracker (WIP)
 
 Shows data inherent to the coronavirus spread with an interactive map which can be hovered/clicked for country's specific counter.
 
