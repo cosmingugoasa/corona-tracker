@@ -35,7 +35,6 @@ $(document).ready( function() {
     $( "path" ).click( function () {
         //get clicked country alpha2 code
         var country_clicked = $(this).attr('id');
-        console.log(country_clicked);
 
         //search for clicked country data
         locations.forEach( function (location) {
