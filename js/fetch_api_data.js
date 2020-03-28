@@ -35,16 +35,7 @@ let secondGraphData = {
     recovered: []
 };
 
-//Timeline of the country with the most confirmed cases
-// let thirdGraphData = {
-//     //'timestamp': [confirmed, deaths, recovered],
-//     //'timestamp': [confirmed, deaths, recovered],
-//     //'timestamp': [confirmed, deaths, recovered],
-// };
-
-var timestamps = [];
-
-var thirdGraphData = {};
+let thirdGraphData = {};
 
 $(document).ready(function () {
 
@@ -149,18 +140,15 @@ $(document).ready(function () {
 
         //TODO : Fix waiting for getJSON to finish
         const topCountry = locations[0];
+        //thirdGraphData = setThirdGraphData(topCountry.country_code);
+        setThirdGraphData(topCountry.country_code);
 
-        // setThirdGraphData(topCountry.country_code).then(function (returnedData) {
-        //     thirdGraphData = returnedData;
-        //     console.log("Main")
-        //     console.log(returnedData);
-        //     console.log(thirdGraphData);
-        //     console.log(thirdGraphData["2020-01-22"]);
-        // });
+        $.each(thirdGraphData, function (key, val) {
+            console.log(key);
+            console.log(val);
+        })
 
-        thirdGraphData = setThirdGraphData(topCountry.country_code);
-
-        setTimeout(function()
+        /*setTimeout(function()
         {
             console.log(thirdGraphData);
             let confirmed =[];
@@ -209,7 +197,7 @@ $(document).ready(function () {
                     }
                 }
             });
-        }, 200);
+        }, 200);*/
 
         // setThirdGraphData(topCountry.country_code).then(result =>{
         //     var thirdGraphData = result;
@@ -295,45 +283,17 @@ $(document).ready(function () {
     });
 });
 
-// function setThirdGraphData(countryCode) {
-//
-//     //Get all provinces IDs that have the country code
-//     return $.getJSON(url.concat("locations?country_code="+countryCode)).then(function (provinces) {
-//         let data = {};
-//         //For every province in the country
-//         $.each(provinces.locations, function(index, province){
-//             //Fetch the province data (which includes the timelines)
-//             return $.getJSON(url.concat("locations/"+province.id)).then(function(locationObj){
-//                 //console.log(locationObj);
-//                 //Loop through the different timelines (confirmed timeline, deaths timeline, recovered timeline)
-//                 $.each(locationObj.location.timelines, function (type, timelineObj) {
-//                     $.each(timelineObj.timeline, function (time, cases) {
-//                         time = time.split("T")[0];
-//                         if (typeof data[time] === 'undefined'){
-//                             //Insert new timeline "node" with 0 confirmed, 0 deaths, 0 recovered
-//                             data[time] = [0,0,0];
-//                             timestamps.push(time);
-//                         }
-//                         switch (type) {
-//                             case "confirmed": data[time][0] += parseInt(cases);
-//                                 break;
-//                             case "deaths": data[time][1] += parseInt(cases);
-//                                 break;
-//                             case "recovered": data[time][2] += parseInt(cases);
-//                                 break;
-//                         }
-//                     });
-//                 });
-//             });
-//         });
-//         console.log(data);
-//         thirdGraphData = data;
-//         return data;
-//     });
-//
-// }
+function setThirdGraphData(countryCode){
+    $.getJSON(url.concat("locations?country_code="+countryCode),function (country) {
+        assignData(country);
+    });
+}
 
-function setThirdGraphData(countryCode) {
+function assignData(result){
+    thirdGraphData = result;
+}
+
+/*function setThirdGraphData(countryCode) {
     let data = {};
     //Get all provinces IDs that have the country code
     $.getJSON(url.concat("locations?country_code="+countryCode), function (provinces) {
@@ -365,7 +325,7 @@ function setThirdGraphData(countryCode) {
         });
     });
     return data;
-}
+}*/
 
 //TODO: Improve performance by deleting array elements after looping through them
 function groupByProvince(locations) {
