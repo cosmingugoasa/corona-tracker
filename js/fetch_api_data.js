@@ -206,6 +206,11 @@ $(document).ready(function () {
                     title:{
                         display: true,
                         text: 'Cronologia casi per '+topCountry.country
+                    },
+                    animation: {
+                        onComplete: function () {
+                            $(".loader-wrapper").fadeOut("slow");
+                        }
                     }
                 }
             });
