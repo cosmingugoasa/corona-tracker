@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 $(document).ready( function() {
 
     //enable pan&zoom
@@ -80,7 +79,6 @@ $(document).ready( function() {
         });
     });
 });
-=======
 $(document).ready( function() {
 
     //enable pan&zoom
@@ -128,4 +126,3 @@ $(document).ready( function() {
         });
     });
 });
->>>>>>> develop
