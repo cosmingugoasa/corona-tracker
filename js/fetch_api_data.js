@@ -35,13 +35,6 @@ let secondGraphData = {
     recovered: []
 };
 
-//Timeline of the country with the most confirmed cases
-// let thirdGraphData = {
-//     //'timestamp': [confirmed, deaths, recovered],
-//     //'timestamp': [confirmed, deaths, recovered],
-//     //'timestamp': [confirmed, deaths, recovered],
-// };
-
 var timestamps = [];
 
 var thirdGraphData = {};
@@ -150,14 +143,6 @@ $(document).ready(function () {
         //TODO : Fix waiting for getJSON to finish
         const topCountry = locations[0];
 
-        // setThirdGraphData(topCountry.country_code).then(function (returnedData) {
-        //     thirdGraphData = returnedData;
-        //     console.log("Main")
-        //     console.log(returnedData);
-        //     console.log(thirdGraphData);
-        //     console.log(thirdGraphData["2020-01-22"]);
-        // });
-
         thirdGraphData = setThirdGraphData(topCountry.country_code);
 
         setTimeout(function()
@@ -254,17 +239,17 @@ function setThirdGraphData(countryCode) {
     return data;
 }
 
-//TODO: Improve performance by deleting array elements after looping through them
 function groupByProvince(locations) {
     //Array of all the provinces grouped into their countries
     let groupedLocations = [];
-    locations.forEach(location =>{
+    let index = locations.length;
+    while(index--){
         let pos = -1;
         //Look in the array to see if there's already a province with the country code of the location
         if(groupedLocations.length > 0){
             let cont = 0;
             groupedLocations.forEach(loc =>{
-                if(loc.country_code === location.country_code){
+                if(loc.country_code === locations[index].country_code){
                     pos = cont;
                 }
                 cont++;
@@ -273,14 +258,17 @@ function groupByProvince(locations) {
 
         //Add the latest data to the location saved in the array
         if(pos !== -1){
-            groupedLocations[pos].latest.confirmed = parseInt(groupedLocations[pos].latest.confirmed) + parseInt(location.latest.confirmed);
-            groupedLocations[pos].latest.deaths = parseInt(groupedLocations[pos].latest.deaths) + parseInt(location.latest.deaths);
-            groupedLocations[pos].latest.recovered = parseInt(groupedLocations[pos].latest.recovered) + parseInt(location.latest.recovered);
+            groupedLocations[pos].latest.confirmed = parseInt(groupedLocations[pos].latest.confirmed) + parseInt(locations[index].latest.confirmed);
+            groupedLocations[pos].latest.deaths = parseInt(groupedLocations[pos].latest.deaths) + parseInt(locations[index].latest.deaths);
+            groupedLocations[pos].latest.recovered = parseInt(groupedLocations[pos].latest.recovered) + parseInt(locations[index].latest.recovered);
+
         }else{
             //Else add to the groupedLocation array as a new location
-            groupedLocations.push(location);
+            groupedLocations.push(locations[index]);
+
         }
-    });
-    // console.log(groupedLocations);
+        locations.splice(index, 1);
+    }
+    console.log(groupedLocations);
     return groupedLocations;
 }
