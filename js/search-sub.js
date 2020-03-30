@@ -26,7 +26,7 @@ $(document).ready(function () {
 
     /*SUBSCRIBE BUTTON*/
     //disable button (input field empty)
-    $( '#sub-button' ).attr('disabled', true);
+    //$( '#sub-button' ).attr('disabled', true);
 
     //enable button only if input field is not empty
     $( '#email' ).keyup( function () {
@@ -36,4 +36,9 @@ $(document).ready(function () {
             $( '#sub-button' ).attr('disabled', false);
         }
     });
+
+    $( '#sub-button' ).click(function () {
+        console.log("sub clicked ");
+    })
+
 });

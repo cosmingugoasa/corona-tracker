@@ -10,5 +10,9 @@ app.get('/', function (req, res) {
     console.log("received get / request");
 });
 
+app.post('/sub', function () {
+    console.log("post");
+});
+
 server.listen(7777);
 console.log("server listening . . .");
