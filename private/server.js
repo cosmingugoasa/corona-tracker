@@ -10,8 +10,9 @@ app.get('/', function (req, res) {
     console.log("received get / request");
 });
 
-app.post('/sub', function () {
-    console.log("post");
+app.post('/sub', function (req, res) {
+    console.log(req.body.emailinput);
+    res.redirect('/');
 });
 
 server.listen(7777);

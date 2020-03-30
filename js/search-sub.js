@@ -36,9 +36,4 @@ $(document).ready(function () {
             $( '#sub-button' ).attr('disabled', false);
         }
     });
-
-    $( '#sub-button' ).click(function () {
-        console.log("sub clicked ");
-    })
-
 });
