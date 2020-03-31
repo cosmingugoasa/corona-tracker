@@ -35,13 +35,6 @@ let secondGraphData = {
     recovered: []
 };
 
-//Timeline of the country with the most confirmed cases
-// let thirdGraphData = {
-//     //'timestamp': [confirmed, deaths, recovered],
-//     //'timestamp': [confirmed, deaths, recovered],
-//     //'timestamp': [confirmed, deaths, recovered],
-// };
-
 var timestamps = [];
 
 var thirdGraphData = {};
@@ -150,19 +143,11 @@ $(document).ready(function () {
         //TODO : Fix waiting for getJSON to finish
         const topCountry = locations[0];
 
-        // setThirdGraphData(topCountry.country_code).then(function (returnedData) {
-        //     thirdGraphData = returnedData;
-        //     console.log("Main")
-        //     console.log(returnedData);
-        //     console.log(thirdGraphData);
-        //     console.log(thirdGraphData["2020-01-22"]);
-        // });
-
         thirdGraphData = setThirdGraphData(topCountry.country_code);
 
         setTimeout(function()
         {
-            console.log(thirdGraphData);
+            //Display 20 recorded days
             let confirmed =[];
             let deaths = [];
             let recovered = [];
@@ -171,27 +156,29 @@ $(document).ready(function () {
                 deaths.push(value[1]);
                 recovered.push(value[2]);
             });
+
+            let daysToSkip = parseInt(confirmed.length) - 20;
             var thirdChart = new Chart(tctx,{
                 type: 'line',
                 data:{
-                    labels:Object.keys(thirdGraphData),
+                    labels:Object.keys(thirdGraphData).slice(daysToSkip),
                     datasets: [
                         //Confirmed
                         {
                             label: labels[0],
-                            data:confirmed,
+                            data:confirmed.slice(daysToSkip),
                             backgroundColor: colors["confirmed"]
                         },
                         //Deaths
                         {
                             label: labels[1],
-                            data:deaths,
+                            data:deaths.slice(daysToSkip),
                             backgroundColor: colors["deaths"]
                         },
                         //Recovered
                         {
                             label: labels[2],
-                            data:recovered,
+                            data:recovered.slice(daysToSkip),
                             backgroundColor: colors["recovered"]
                         },
                     ],
@@ -214,129 +201,9 @@ $(document).ready(function () {
                     }
                 }
             });
-        }, 200);
-
-        // setThirdGraphData(topCountry.country_code).then(result =>{
-        //     var thirdGraphData = result;
-        //     console.log(thirdGraphData["2020-01-22"]);
-        //     //Init third graph
-        //     var thirdChart = new Chart(tctx,{
-        //         type: 'line',
-        //         data:{
-        //             labels:Object.keys(thirdGraphData),
-        //             datasets: [
-        //                 //Confirmed
-        //                 {
-        //                     label: labels[0],
-        //                     data:thirdGraphData.confirmed,
-        //                     backgroundColor: colors["confirmed"]
-        //                 },
-        //                 //Deaths
-        //                 {
-        //                     label: labels[1],
-        //                     data:thirdGraphData.deaths,
-        //                     backgroundColor: colors["deaths"]
-        //                 },
-        //                 //Recovered
-        //                 {
-        //                     label: labels[2],
-        //                     data:thirdGraphData.recovered,
-        //                     backgroundColor: colors["recovered"]
-        //                 },
-        //             ],
-        //         },
-        //         options: {
-        //             responsive: true,
-        //             maintainAspectRatio: false,
-        //             legend:{
-        //                 display: false,
-        //                 position: 'bottom'
-        //             },
-        //             title:{
-        //                 display: true,
-        //                 text: 'Cronologia casi per '+topCountry.country
-        //             }
-        //         }
-        //     });
-        // });
-        // var thirdChart = new Chart(tctx,{
-        //     type: 'line',
-        //     data:{
-        //         labels:Object.keys(thirdGraphData),
-        //         datasets: [
-        //             //Confirmed
-        //             {
-        //                 label: labels[0],
-        //                 data:thirdGraphData.confirmed,
-        //                 backgroundColor: colors["confirmed"]
-        //             },
-        //             //Deaths
-        //             {
-        //                 label: labels[1],
-        //                 data:thirdGraphData.deaths,
-        //                 backgroundColor: colors["deaths"]
-        //             },
-        //             //Recovered
-        //             {
-        //                 label: labels[2],
-        //                 data:thirdGraphData.recovered,
-        //                 backgroundColor: colors["recovered"]
-        //             },
-        //         ],
-        //     },
-        //     options: {
-        //         responsive: true,
-        //         maintainAspectRatio: false,
-        //         legend:{
-        //             display: false,
-        //             position: 'bottom'
-        //         },
-        //         title:{
-        //             display: true,
-        //             text: 'Cronologia casi per '+topCountry.country
-        //         }
-        //     }
-        // });
+        }, 400);
     });
 });
-
-// function setThirdGraphData(countryCode) {
-//
-//     //Get all provinces IDs that have the country code
-//     return $.getJSON(url.concat("locations?country_code="+countryCode)).then(function (provinces) {
-//         let data = {};
-//         //For every province in the country
-//         $.each(provinces.locations, function(index, province){
-//             //Fetch the province data (which includes the timelines)
-//             return $.getJSON(url.concat("locations/"+province.id)).then(function(locationObj){
-//                 //console.log(locationObj);
-//                 //Loop through the different timelines (confirmed timeline, deaths timeline, recovered timeline)
-//                 $.each(locationObj.location.timelines, function (type, timelineObj) {
-//                     $.each(timelineObj.timeline, function (time, cases) {
-//                         time = time.split("T")[0];
-//                         if (typeof data[time] === 'undefined'){
-//                             //Insert new timeline "node" with 0 confirmed, 0 deaths, 0 recovered
-//                             data[time] = [0,0,0];
-//                             timestamps.push(time);
-//                         }
-//                         switch (type) {
-//                             case "confirmed": data[time][0] += parseInt(cases);
-//                                 break;
-//                             case "deaths": data[time][1] += parseInt(cases);
-//                                 break;
-//                             case "recovered": data[time][2] += parseInt(cases);
-//                                 break;
-//                         }
-//                     });
-//                 });
-//             });
-//         });
-//         console.log(data);
-//         thirdGraphData = data;
-//         return data;
-//     });
-//
-// }
 
 function setThirdGraphData(countryCode) {
     let data = {};
@@ -372,17 +239,17 @@ function setThirdGraphData(countryCode) {
     return data;
 }
 
-//TODO: Improve performance by deleting array elements after looping through them
 function groupByProvince(locations) {
     //Array of all the provinces grouped into their countries
     let groupedLocations = [];
-    locations.forEach(location =>{
+    let index = locations.length;
+    while(index--){
         let pos = -1;
         //Look in the array to see if there's already a province with the country code of the location
         if(groupedLocations.length > 0){
             let cont = 0;
             groupedLocations.forEach(loc =>{
-                if(loc.country_code === location.country_code){
+                if(loc.country_code === locations[index].country_code){
                     pos = cont;
                 }
                 cont++;
@@ -391,14 +258,17 @@ function groupByProvince(locations) {
 
         //Add the latest data to the location saved in the array
         if(pos !== -1){
-            groupedLocations[pos].latest.confirmed = parseInt(groupedLocations[pos].latest.confirmed) + parseInt(location.latest.confirmed);
-            groupedLocations[pos].latest.deaths = parseInt(groupedLocations[pos].latest.deaths) + parseInt(location.latest.deaths);
-            groupedLocations[pos].latest.recovered = parseInt(groupedLocations[pos].latest.recovered) + parseInt(location.latest.recovered);
+            groupedLocations[pos].latest.confirmed = parseInt(groupedLocations[pos].latest.confirmed) + parseInt(locations[index].latest.confirmed);
+            groupedLocations[pos].latest.deaths = parseInt(groupedLocations[pos].latest.deaths) + parseInt(locations[index].latest.deaths);
+            groupedLocations[pos].latest.recovered = parseInt(groupedLocations[pos].latest.recovered) + parseInt(locations[index].latest.recovered);
+
         }else{
             //Else add to the groupedLocation array as a new location
-            groupedLocations.push(location);
+            groupedLocations.push(locations[index]);
+
         }
-    });
-    // console.log(groupedLocations);
+        locations.splice(index, 1);
+    }
+    console.log(groupedLocations);
     return groupedLocations;
 }
