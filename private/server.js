@@ -1,4 +1,8 @@
+require('dotenv').config();
+
 var express = require('express');
+const nodemailer = require('nodemailer');
+
 var app = express();
 var server = require('http').Server(app);
 var path = require('path');
@@ -19,3 +23,30 @@ app.post('/sub', function (req, res) {
 
 server.listen(7777);
 console.log("server listening . . .");
+
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth:{
+        //TODO: Use environment variables
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+    }
+});
+//TODO: Use emails stored on database
+//TODO: Fetch latest data from API
+let options = {
+    from: '"COVID-19 Tracker"coronatracker.noreply@gmail.com',
+
+    to: 'savastrecosmingabriele@gmail.com',
+    subject: 'Dati aggiornati per il '+ new Date().toLocaleDateString(),
+    text: 'Numeri aggiornati',
+    html: '<h1>Numeri aggiornati</h1><p>Funziona!</p>'
+};
+
+transporter.sendMail(options, function (error, data) {
+   if(error){
+       console.log("Errore nell'invio delle E-mail: ", error);
+   } else {
+       console.log("E-mail inviata con successo");
+   }
+});
