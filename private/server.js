@@ -2,7 +2,9 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var path = require('path');
+var bp = require('body-parser');
 
+app.use(bp());
 app.use('/', express.static(path.join(__dirname, '../')));
 
 app.get('/', function (req, res) {
@@ -11,7 +13,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/sub', function (req, res) {
-    console.log(req.body.emailinput);
+    console.log(JSON.stringify(req.body.emailinput));
     res.redirect('/');
 });
 
