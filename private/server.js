@@ -2,6 +2,7 @@ require('dotenv').config();
 
 var express = require('express');
 const nodemailer = require('nodemailer');
+let CronJob = require('cron').CronJob;
 
 var app = express();
 var server = require('http').Server(app);
@@ -27,7 +28,6 @@ console.log("server listening . . .");
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth:{
-        //TODO: Use environment variables
         user: process.env.EMAIL,
         pass: process.env.PASSWORD
     }
@@ -43,10 +43,17 @@ let options = {
     html: '<h1>Numeri aggiornati</h1><p>Funziona!</p>'
 };
 
-transporter.sendMail(options, function (error, data) {
-   if(error){
-       console.log("Errore nell'invio delle E-mail: ", error);
-   } else {
-       console.log("E-mail inviata con successo");
-   }
-});
+
+
+
+let job = new CronJob('0 0 19 * * *', function() {
+    console.log('You will see this message every minute');
+    transporter.sendMail(options, function (error, data) {
+       if(error){
+           console.log("Errore nell'invio delle E-mail: ", error);
+       } else {
+           console.log("E-mail inviata con successo");
+       }
+    });
+}, null, true, 'Europe/Rome');
+job.start();
