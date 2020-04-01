@@ -24,7 +24,6 @@ app.post('/sub', function (req, res) {
 
 server.listen(7777);
 console.log("server listening . . .");
-
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth:{
@@ -46,7 +45,7 @@ let options = {
 
 
 
-let job = new CronJob('0 0 19 * * *', function() {
+/*let job = new CronJob('0 0 19 * * *', function() {
     console.log('You will see this message every minute');
     transporter.sendMail(options, function (error, data) {
        if(error){
@@ -56,4 +55,4 @@ let job = new CronJob('0 0 19 * * *', function() {
        }
     });
 }, null, true, 'Europe/Rome');
-job.start();
+job.start();*/
