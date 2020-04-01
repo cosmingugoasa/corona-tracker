@@ -8,6 +8,7 @@ Shows data inherent to the coronavirus spread with an interactive map which can 
 * [jQuery](https://jquery.com/) - JavaScript library, with an easy-to-use API
 * [Chart.js](https://www.chartjs.org/) - Used to generate js charts
 * [Coronavirus API](https://github.com/ExpDev07/coronavirus-tracker-api) - Used to retrieve up-to-date data about Coronavirus outbreak.
+* [Node.js](https://nodejs.org/it/about/) - Used for server side.
 
 ## Authors
 
