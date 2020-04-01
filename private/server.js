@@ -4,9 +4,13 @@ var server = require('http').Server(app);
 var path = require('path');
 var bp = require('body-parser');
 var mongoose = require('mongoose');
-
+var request = require('request');
 require('dotenv').config();
 
+app.use(bp());
+app.use('/', express.static(path.join(__dirname, '../')));
+
+//database model and schema
 var userSchema = mongoose.Schema({
     email: 'string'
 });
@@ -22,6 +26,14 @@ db.once('open', function () {
     console.log("Connected to Database. \n");
 });
 
+//request lates data from api
+request('https://coronavirus-tracker-api.herokuapp.com/v2/latest', {json: true}, function (err, res, body) {
+    if(err) {return console.log(err)}
+    console.log(body);
+    //use body.confirmed ecc..
+});
+
+//send email to all subs
 users.find({}, {_id: 0, __v: 0}, function (err, data) {
     console.log("Subscribed users :");
     data.forEach(function (element) {
@@ -29,11 +41,6 @@ users.find({}, {_id: 0, __v: 0}, function (err, data) {
         //TODO SEND MAIL TO element.mail
     })
 });
-
-
-
-app.use(bp());
-app.use('/', express.static(path.join(__dirname, '../')));
 
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../index.html'));
