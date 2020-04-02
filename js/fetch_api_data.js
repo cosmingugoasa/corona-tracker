@@ -35,7 +35,9 @@ let secondGraphData = {
     recovered: []
 };
 
-let thirdGraphData = {};
+var timestamps = [];
+
+var thirdGraphData = {};
 
 $(document).ready(function () {
 
@@ -143,14 +145,11 @@ $(document).ready(function () {
         //thirdGraphData = setThirdGraphData(topCountry.country_code);
         setThirdGraphData(topCountry.country_code);
 
-        $.each(thirdGraphData, function (key, val) {
-            console.log(key);
-            console.log(val);
-        })
+        thirdGraphData = setThirdGraphData(topCountry.country_code);
 
-        /*setTimeout(function()
+        setTimeout(function()
         {
-            console.log(thirdGraphData);
+            //Display 20 recorded days
             let confirmed =[];
             let deaths = [];
             let recovered = [];
@@ -159,27 +158,29 @@ $(document).ready(function () {
                 deaths.push(value[1]);
                 recovered.push(value[2]);
             });
+
+            let daysToSkip = parseInt(confirmed.length) - 20;
             var thirdChart = new Chart(tctx,{
                 type: 'line',
                 data:{
-                    labels:Object.keys(thirdGraphData),
+                    labels:Object.keys(thirdGraphData).slice(daysToSkip),
                     datasets: [
                         //Confirmed
                         {
                             label: labels[0],
-                            data:confirmed,
+                            data:confirmed.slice(daysToSkip),
                             backgroundColor: colors["confirmed"]
                         },
                         //Deaths
                         {
                             label: labels[1],
-                            data:deaths,
+                            data:deaths.slice(daysToSkip),
                             backgroundColor: colors["deaths"]
                         },
                         //Recovered
                         {
                             label: labels[2],
-                            data:recovered,
+                            data:recovered.slice(daysToSkip),
                             backgroundColor: colors["recovered"]
                         },
                     ],
@@ -198,107 +199,16 @@ $(document).ready(function () {
                     animation: {
                         onComplete: function () {
                             $(".loader-wrapper").fadeOut("slow");
+                            alert("JHU (our main data provider) no longer provides data for amount of recoveries, and as a result, the API will be showing 0 for this statistic. Apologies for any inconvenience. Hopefully we'll be able to find an alternative data-source that offers this.");
                         }
                     }
                 }
             });
-        }, 200);*/
-
-        // setThirdGraphData(topCountry.country_code).then(result =>{
-        //     var thirdGraphData = result;
-        //     console.log(thirdGraphData["2020-01-22"]);
-        //     //Init third graph
-        //     var thirdChart = new Chart(tctx,{
-        //         type: 'line',
-        //         data:{
-        //             labels:Object.keys(thirdGraphData),
-        //             datasets: [
-        //                 //Confirmed
-        //                 {
-        //                     label: labels[0],
-        //                     data:thirdGraphData.confirmed,
-        //                     backgroundColor: colors["confirmed"]
-        //                 },
-        //                 //Deaths
-        //                 {
-        //                     label: labels[1],
-        //                     data:thirdGraphData.deaths,
-        //                     backgroundColor: colors["deaths"]
-        //                 },
-        //                 //Recovered
-        //                 {
-        //                     label: labels[2],
-        //                     data:thirdGraphData.recovered,
-        //                     backgroundColor: colors["recovered"]
-        //                 },
-        //             ],
-        //         },
-        //         options: {
-        //             responsive: true,
-        //             maintainAspectRatio: false,
-        //             legend:{
-        //                 display: false,
-        //                 position: 'bottom'
-        //             },
-        //             title:{
-        //                 display: true,
-        //                 text: 'Cronologia casi per '+topCountry.country
-        //             }
-        //         }
-        //     });
-        // });
-        // var thirdChart = new Chart(tctx,{
-        //     type: 'line',
-        //     data:{
-        //         labels:Object.keys(thirdGraphData),
-        //         datasets: [
-        //             //Confirmed
-        //             {
-        //                 label: labels[0],
-        //                 data:thirdGraphData.confirmed,
-        //                 backgroundColor: colors["confirmed"]
-        //             },
-        //             //Deaths
-        //             {
-        //                 label: labels[1],
-        //                 data:thirdGraphData.deaths,
-        //                 backgroundColor: colors["deaths"]
-        //             },
-        //             //Recovered
-        //             {
-        //                 label: labels[2],
-        //                 data:thirdGraphData.recovered,
-        //                 backgroundColor: colors["recovered"]
-        //             },
-        //         ],
-        //     },
-        //     options: {
-        //         responsive: true,
-        //         maintainAspectRatio: false,
-        //         legend:{
-        //             display: false,
-        //             position: 'bottom'
-        //         },
-        //         title:{
-        //             display: true,
-        //             text: 'Cronologia casi per '+topCountry.country
-        //         }
-        //     }
-        // });
+        }, 400);
     });
 });
 
-function setThirdGraphData(countryCode){
-    $.getJSON(url.concat("locations?country_code="+countryCode),function (country) {
-        assignData(country);
-    });
-}
-
-function assignData(result){
-    thirdGraphData = result;
-}
-
-/*function setThirdGraphData(countryCode) {
+function setThirdGraphData(countryCode) {
     let data = {};
     //Get all provinces IDs that have the country code
     $.getJSON(url.concat("locations?country_code="+countryCode), function (provinces) {
@@ -332,17 +242,17 @@ function assignData(result){
     return data;
 }*/
 
-//TODO: Improve performance by deleting array elements after looping through them
 function groupByProvince(locations) {
     //Array of all the provinces grouped into their countries
     let groupedLocations = [];
-    locations.forEach(location =>{
+    let index = locations.length;
+    while(index--){
         let pos = -1;
         //Look in the array to see if there's already a province with the country code of the location
         if(groupedLocations.length > 0){
             let cont = 0;
             groupedLocations.forEach(loc =>{
-                if(loc.country_code === location.country_code){
+                if(loc.country_code === locations[index].country_code){
                     pos = cont;
                 }
                 cont++;
@@ -351,14 +261,17 @@ function groupByProvince(locations) {
 
         //Add the latest data to the location saved in the array
         if(pos !== -1){
-            groupedLocations[pos].latest.confirmed = parseInt(groupedLocations[pos].latest.confirmed) + parseInt(location.latest.confirmed);
-            groupedLocations[pos].latest.deaths = parseInt(groupedLocations[pos].latest.deaths) + parseInt(location.latest.deaths);
-            groupedLocations[pos].latest.recovered = parseInt(groupedLocations[pos].latest.recovered) + parseInt(location.latest.recovered);
+            groupedLocations[pos].latest.confirmed = parseInt(groupedLocations[pos].latest.confirmed) + parseInt(locations[index].latest.confirmed);
+            groupedLocations[pos].latest.deaths = parseInt(groupedLocations[pos].latest.deaths) + parseInt(locations[index].latest.deaths);
+            groupedLocations[pos].latest.recovered = parseInt(groupedLocations[pos].latest.recovered) + parseInt(locations[index].latest.recovered);
+
         }else{
             //Else add to the groupedLocation array as a new location
-            groupedLocations.push(location);
+            groupedLocations.push(locations[index]);
+
         }
-    });
-    // console.log(groupedLocations);
+        locations.splice(index, 1);
+    }
+    console.log(groupedLocations);
     return groupedLocations;
 }
