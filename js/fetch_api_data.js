@@ -197,6 +197,7 @@ $(document).ready(function () {
                     animation: {
                         onComplete: function () {
                             $(".loader-wrapper").fadeOut("slow");
+                            alert("JHU (our main data provider) no longer provides data for amount of recoveries, and as a result, the API will be showing 0 for this statistic. Apologies for any inconvenience. Hopefully we'll be able to find an alternative data-source that offers this.");
                         }
                     }
                 }

@@ -30,15 +30,15 @@ db.on('error', function (error) {
 db.once('open', function () {
     console.log("Connected to Database. \n");
 });
+
 let mailList = '';
 //send email to all subs
 users.find({}, {_id: 0, __v: 0}, function (err, data) {
     console.log("Subscribed users :");
     data.forEach(function (element) {
-        // console.log(element.email);
+        console.log(element.email);
         mailList += element.email + ',';
     });
-    console.log(mailList);
 });
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, '../index.html'));
@@ -66,8 +66,6 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-
-
 let job = new CronJob('0 0 19 * * *', function() {
     //request lates data from api
     request('https://coronavirus-tracker-api.herokuapp.com/v2/latest', {json: true}, function (err, res, body) {
@@ -93,4 +91,5 @@ let job = new CronJob('0 0 19 * * *', function() {
         });
     });
 }, null, true, 'Europe/Rome');
+
 job.start();
