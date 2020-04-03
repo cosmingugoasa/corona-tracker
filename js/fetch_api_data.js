@@ -16,55 +16,223 @@ const sctx = document.getElementById('secondChart').getContext('2d');
 //Third chart(Line chart with timeline of most infected country or selected country)
 const tctx = document.getElementById('thirdChart').getContext('2d');
 
-const colors = {'confirmed': 'Red', 'deaths': 'Grey', 'recovered': 'Green'};
+const colors = {'confirmed': 'Orange', 'deaths': 'Red', 'recovered': 'Green'};
 
 const labels = ['Confermati', 'Decessi', 'Guariti'];
 
-//Total numbers of confirmed, deaths and recovered
-let firstGraphData = [];
-
-//Top countries by the total number of confirmed cases
-let secondGraphData = {
-    //Names of the countries with most confirmed
-    countriesLabels: [],
-    //Number of confirmed cases per country
-    confirmed: [],
-    //Number of deaths per country
-    deaths: [],
-    //Number of recovered per country
-    recovered: []
-};
-
-var timestamps = [];
-
-var thirdGraphData = {};
-
 $(document).ready(function () {
+        updateFirstChart("GLOBAL");
+        updateSecondChart("GLOBAL");
+        updateThirdChart("GLOBAL");
+});
 
-    //Get location based data
-    $.getJSON(url.concat("locations?timelines=1"), function(data){
+// $(document).ready(function () {
 
-        overallData = data.latest;
+//     //Get location based data
+//     $.getJSON(url.concat("locations?timelines=1"), function(data){
+//
+//         overallData = data.latest;
+//
+//         $('#infetti').text(overallData.confirmed);
+//         $('#deceduti').text(overallData.deaths);
+//         $('#guariti').text(overallData.recovered);
+//
+//         $.each(overallData, function (key, value) {
+//             firstGraphData.push(parseInt(value));
+//         });
+//
+//         //Init first graph
+//         var firstChart = new Chart(fctx,{
+//             type: 'pie',
+//             data:{
+//                 datasets: [{
+//                     data: firstGraphData,
+//                     backgroundColor:[colors["confirmed"],colors["deaths"],colors["recovered"]]
+//                 }],
+//                 labels: labels
+//             },
+//
+//             options: {
+//                 responsive: true,
+//                 maintainAspectRatio: false,
+//                 legend:{
+//                     display: false,
+//                     position: 'bottom'
+//                 },
+//                 title:{
+//                     display: true,
+//                     text: 'Casi globali'
+//                 }
+//             }
+//         });
+//
+//         //Start second chart
+//         // locations = data.locations.sort(function (a, b) {
+//         //     if (a.country_code < b.country_code){
+//         //         return -1;
+//         //     } else if( a.country_code > b.country_code){
+//         //         return 1;
+//         //     }else{
+//         //         return 0;
+//         //     }
+//         // });
+//         locations = groupByProvince(locations);
+//
+//         locations = locations.sort(function (a, b) {
+//             //Order descending
+//             return (parseInt(a.latest.confirmed) - parseInt(b.latest.confirmed)) * -1;
+//         });
+//
+//         //Get cases info from top 5 infected countries
+//         locations.slice(0, 5).map(location => {
+//             secondGraphData.countriesLabels.push(location.country);
+//             secondGraphData.confirmed.push(parseInt(location.latest.confirmed));
+//             secondGraphData.deaths.push(parseInt(location.latest.deaths));
+//             secondGraphData.recovered.push(parseInt(location.latest.recovered));
+//         });
+//
+//         //Init second graph
+//         var secondChart = new Chart(sctx,{
+//             type: 'horizontalBar',
+//             data:{
+//                 labels: secondGraphData.countriesLabels,
+//                 datasets: [
+//                     {
+//                         label: labels[0],
+//                         data: secondGraphData.confirmed,
+//                         backgroundColor: colors["confirmed"],
+//                     },
+//                     {
+//                         label: labels[1],
+//                         data: secondGraphData.deaths,
+//                         backgroundColor: colors["deaths"],
+//                     },
+//                     {
+//                         label: labels[2],
+//                         data: secondGraphData.recovered,
+//                         backgroundColor: colors["recovered"],
+//                     },
+//                 ],
+//             },
+//             options: {
+//                 responsive: true,
+//                 maintainAspectRatio: false,
+//                 legend:{
+//                     display: true,
+//                     position: 'bottom'
+//                 },
+//                 title:{
+//                     display: true,
+//                     text: 'Classifica dei contagi'
+//                 }
+//             }
+//         });
+//
+//         //TODO : Fix waiting for getJSON to finish
+//         const topCountry = locations[0];
+//         //thirdGraphData = setThirdGraphData(topCountry.country_code);
+//         setThirdGraphData(topCountry.country_code);
+//
+//         thirdGraphData = setThirdGraphData(topCountry.country_code);
+//
+//         setTimeout(function()
+//         {
+//             //Display 20 recorded days
+//             let confirmed =[];
+//             let deaths = [];
+//             let recovered = [];
+//             $.each(thirdGraphData, function (key, value) {
+//                 confirmed.push(value[0]);
+//                 deaths.push(value[1]);
+//                 recovered.push(value[2]);
+//             });
+//
+//             let daysToSkip = parseInt(confirmed.length) - 20;
+//             var thirdChart = new Chart(tctx,{
+//                 type: 'line',
+//                 data:{
+//                     labels:Object.keys(thirdGraphData).slice(daysToSkip),
+//                     datasets: [
+//                         //Confirmed
+//                         {
+//                             label: labels[0],
+//                             data:confirmed.slice(daysToSkip),
+//                             backgroundColor: colors["confirmed"]
+//                         },
+//                         //Deaths
+//                         {
+//                             label: labels[1],
+//                             data:deaths.slice(daysToSkip),
+//                             backgroundColor: colors["deaths"]
+//                         },
+//                         //Recovered
+//                         {
+//                             label: labels[2],
+//                             data:recovered.slice(daysToSkip),
+//                             backgroundColor: colors["recovered"]
+//                         },
+//                     ],
+//                 },
+//                 options: {
+//                     responsive: true,
+//                     maintainAspectRatio: false,
+//                     legend:{
+//                         display: false,
+//                         position: 'bottom'
+//                     },
+//                     title:{
+//                         display: true,
+//                         text: 'Cronologia casi per '+topCountry.country
+//                     },
+//                     animation: {
+//                         onComplete: function () {
+//                             $(".loader-wrapper").fadeOut("slow");
+//                             alert("JHU (our main data provider) no longer provides data for amount of recoveries, and as a result, the API will be showing 0 for this statistic. Apologies for any inconvenience. Hopefully we'll be able to find an alternative data-source that offers this.");
+//                         }
+//                     }
+//                 }
+//             });
+//         }, 400);
+//     });
+// });
 
-        $('#infetti').text(overallData.confirmed);
-        $('#deceduti').text(overallData.deaths);
-        $('#guariti').text(overallData.recovered);
 
-        $.each(overallData, function (key, value) {
-            firstGraphData.push(parseInt(value));
+function updateFirstChart(countryCode){
+    let urlParam;
+
+    //Change api url request based on the countryCode param
+    if(countryCode === "GLOBAL"){
+        urlParam = "latest";
+    }else{
+        urlParam = `locations?source=jhu&country_code=${countryCode}&timelines=false`;
+    }
+
+    //Update first chart
+    $.getJSON(url.concat(urlParam),function (apiData) {
+        //Total numbers of confirmed, deaths and recovered
+        let firstChartData = [];
+        let firstChartTitle;
+
+        if(countryCode === "GLOBAL"){
+            firstChartTitle = "Casi globali";
+        }else{
+            firstChartTitle = `Casi per ${apiData.locations.country}`;
+        }
+
+        $.each(apiData.latest, function (key, value) {
+            firstChartData.push(parseInt(value));
         });
 
-        //Init first graph
-        var firstChart = new Chart(fctx,{
+        //Init chart
+        let firstChart = new Chart(fctx, {
             type: 'pie',
             data:{
-                datasets: [{
-                    data: firstGraphData,
-                    backgroundColor:[colors["confirmed"],colors["deaths"],colors["recovered"]]
+                datasets:[{
+                    data:firstChartData,
+                    backgroundColor: [colors["confirmed"],colors["deaths"],colors["recovered"]],
                 }],
                 labels: labels
             },
-
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -74,54 +242,95 @@ $(document).ready(function () {
                 },
                 title:{
                     display: true,
-                    text: 'Casi globali'
+                    text: firstChartTitle
                 }
-            }
+            },
+        });
+    });
+}
+
+function updateSecondChart(countryCode){
+    let urlParam;
+    let secondChartTitle;
+
+    //Change api url request based on the countryCode param
+    if(countryCode === "GLOBAL"){
+        urlParam = "locations";
+    }
+    //If the US is selected we need to change sources to csbs since it has more accurate data
+    else if(countryCode === "US"){
+        urlParam = `locations?source=csbs&country_code=${countryCode}&timelines=false`;
+    }else{
+        urlParam = `locations?source=jhu&country_code=${countryCode}&timelines=false`;
+    }
+
+    //Update second chart data
+    $.getJSON(url.concat(urlParam), function (apiData) {
+        //Top countries by the total number of confirmed cases
+        let secondChartData = {
+            //Names of the countries (or provinces if countrycode is given) with most confirmed
+            locationName: [],
+            //Number of confirmed cases per country
+            confirmed: [],
+            //Number of deaths per country
+            deaths: [],
+            //Number of recovered per country
+            recovered: []
+        };
+
+        let orderedLocations = [];
+
+        //If GLOBAL is passed then make a list of most affected countries
+        if(countryCode === "GLOBAL"){
+            orderedLocations = sortByCases(groupByProvince(sortByName(apiData.locations)));
+            //Pick top 5 countries
+            orderedLocations.slice(0, 5).map(location => {
+                secondChartData.locationName.push(location.country);
+            });
+
+        }
+        //If a country code is passed then make a list of the most affected provinces
+        //If said country doesn't have provinces data then display the country latest with total and an alert
+        else{
+            //TODO: Group by county
+            orderedLocations = sortByCases(apiData.locations);
+            //Pick top 5 provinces
+            orderedLocations.slice(0, 5).map(location => {
+                secondChartData.locationName.push(location.county);
+            });
+        }
+
+        orderedLocations.slice(0, 5).map(location => {
+            secondChartData.confirmed.push(parseInt(location.latest.confirmed));
+            secondChartData.deaths.push(parseInt(location.latest.deaths));
+            secondChartData.recovered.push(parseInt(location.latest.recovered));
         });
 
-        locations = data.locations.sort(function (a, b) {
-            if (a.country_code < b.country_code){
-                return -1;
-            } else if( a.country_code > b.country_code){
-                return 1;
-            }else{
-                return 0;
-            }
-        });
-        locations = groupByProvince(locations);
-
-        locations = locations.sort(function (a, b) {
-            //Order descending
-            return (parseInt(a.latest.confirmed) - parseInt(b.latest.confirmed)) * -1;
-        });
-
-        //Get cases info from top 5 infected countries
-        locations.slice(0, 5).map(location => {
-            secondGraphData.countriesLabels.push(location.country);
-            secondGraphData.confirmed.push(parseInt(location.latest.confirmed));
-            secondGraphData.deaths.push(parseInt(location.latest.deaths));
-            secondGraphData.recovered.push(parseInt(location.latest.recovered));
-        });
+        if(countryCode === "GLOBAL"){
+            secondChartTitle = "Classifica globale dei contagi";
+        }else{
+            secondChartTitle = `Casi per ${apiData.locations[0].country}`;
+        }
 
         //Init second graph
-        var secondChart = new Chart(sctx,{
+        let secondChart = new Chart(sctx,{
             type: 'horizontalBar',
             data:{
-                labels: secondGraphData.countriesLabels,
+                labels: secondChartData.locationName,
                 datasets: [
                     {
                         label: labels[0],
-                        data: secondGraphData.confirmed,
+                        data: secondChartData.confirmed,
                         backgroundColor: colors["confirmed"],
                     },
                     {
                         label: labels[1],
-                        data: secondGraphData.deaths,
+                        data: secondChartData.deaths,
                         backgroundColor: colors["deaths"],
                     },
                     {
                         label: labels[2],
-                        data: secondGraphData.recovered,
+                        data: secondChartData.recovered,
                         backgroundColor: colors["recovered"],
                     },
                 ],
@@ -135,78 +344,38 @@ $(document).ready(function () {
                 },
                 title:{
                     display: true,
-                    text: 'Classifica dei contagi'
+                    text: secondChartTitle
                 }
             }
         });
 
-        //TODO : Fix waiting for getJSON to finish
-        const topCountry = locations[0];
-        //thirdGraphData = setThirdGraphData(topCountry.country_code);
-        setThirdGraphData(topCountry.country_code);
-
-        thirdGraphData = setThirdGraphData(topCountry.country_code);
-
-        setTimeout(function()
-        {
-            //Display 20 recorded days
-            let confirmed =[];
-            let deaths = [];
-            let recovered = [];
-            $.each(thirdGraphData, function (key, value) {
-                confirmed.push(value[0]);
-                deaths.push(value[1]);
-                recovered.push(value[2]);
-            });
-
-            let daysToSkip = parseInt(confirmed.length) - 20;
-            var thirdChart = new Chart(tctx,{
-                type: 'line',
-                data:{
-                    labels:Object.keys(thirdGraphData).slice(daysToSkip),
-                    datasets: [
-                        //Confirmed
-                        {
-                            label: labels[0],
-                            data:confirmed.slice(daysToSkip),
-                            backgroundColor: colors["confirmed"]
-                        },
-                        //Deaths
-                        {
-                            label: labels[1],
-                            data:deaths.slice(daysToSkip),
-                            backgroundColor: colors["deaths"]
-                        },
-                        //Recovered
-                        {
-                            label: labels[2],
-                            data:recovered.slice(daysToSkip),
-                            backgroundColor: colors["recovered"]
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    legend:{
-                        display: false,
-                        position: 'bottom'
-                    },
-                    title:{
-                        display: true,
-                        text: 'Cronologia casi per '+topCountry.country
-                    },
-                    animation: {
-                        onComplete: function () {
-                            $(".loader-wrapper").fadeOut("slow");
-                            alert("JHU (our main data provider) no longer provides data for amount of recoveries, and as a result, the API will be showing 0 for this statistic. Apologies for any inconvenience. Hopefully we'll be able to find an alternative data-source that offers this.");
-                        }
-                    }
-                }
-            });
-        }, 400);
     });
-});
+}
+
+function updateThirdChart(countryCode){
+    //Update third chart
+    $.getJSON(url.concat(),function (apiData) {
+        let timestamps = [];
+
+        let thirdChartData = {};
+    });
+}
+
+function updateCounters(countryCode){
+    let urlParam = "";
+
+    if(countryCode === "GLOBAL"){
+        urlParam = "latest";
+    }else{
+        urlParam = `locations?country_code=${countryCode}&timelines=false`;
+    }
+
+    $.getJSON(url.concat(urlParam), function (apiData) {
+        $('#infetti').text(apiData.latest.confirmed);
+        $('#deceduti').text(apiData.latest.deaths);
+        $('#guariti').text(apiData.latest.recovered);
+    });
+}
 
 function setThirdGraphData(countryCode) {
     let data = {};
@@ -240,12 +409,38 @@ function setThirdGraphData(countryCode) {
         });
     });
     return data;
-}*/
+}
+
+function sortByName(locations){
+    //Order the locations by name
+    locations = locations.sort(function (a, b) {
+        if (a.country_code < b.country_code){
+            return -1;
+        } else if( a.country_code > b.country_code){
+            return 1;
+        }else{
+            return 0;
+        }
+    });
+
+    return locations;
+}
+
+//Sort by descending number of confirmed cases
+function sortByCases(locations){
+    locations = locations.sort(function (a, b) {
+        //Order descending
+        return (parseInt(a.latest.confirmed) - parseInt(b.latest.confirmed)) * -1;
+    });
+
+    return locations;
+}
 
 function groupByProvince(locations) {
     //Array of all the provinces grouped into their countries
     let groupedLocations = [];
     let index = locations.length;
+
     while(index--){
         let pos = -1;
         //Look in the array to see if there's already a province with the country code of the location
@@ -272,6 +467,6 @@ function groupByProvince(locations) {
         }
         locations.splice(index, 1);
     }
-    console.log(groupedLocations);
+    // console.log(groupedLocations);
     return groupedLocations;
 }
