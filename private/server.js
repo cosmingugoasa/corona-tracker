@@ -55,7 +55,7 @@ app.post('/sub', async function (req, res) {
     res.redirect('/');
 });
 
-server.listen(8000);
+server.listen(process.env.PORT || 8000);
 console.log("server listening . . .");
 
 let transporter = nodemailer.createTransport({
