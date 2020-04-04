@@ -20,13 +20,6 @@ const colors = {'confirmed': 'Orange', 'deaths': 'Red', 'recovered': 'Green'};
 
 const labels = ['Confermati', 'Decessi', 'Guariti'];
 
-$(document).ready(function () {
-    updateCounters("GLOBAL");
-    updateFirstChart("GLOBAL");
-    updateSecondChart("GLOBAL");
-    updateThirdChart("GLOBAL");
-});
-
 function updateCounters(countryCode){
     let urlParam = "";
 
