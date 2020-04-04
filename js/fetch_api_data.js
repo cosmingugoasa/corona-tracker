@@ -201,30 +201,73 @@ function updateSecondChart(countryCode){
 }
 
 function updateThirdChart(countryCode){
+    let urlParam;
+
+    //Change api url request based on the countryCode param
+    if(countryCode === "GLOBAL"){
+        urlParam = "locations";
+    }
+    //If the US is selected we need to change sources to csbs since it has more accurate data
+    else if(countryCode === "US"){
+        urlParam = `locations?source=csbs&country_code=${countryCode}&timelines=false`;
+    }else{
+        urlParam = `locations?source=jhu&country_code=${countryCode}&timelines=false`;
+    }
+
     //Update third chart
     $.getJSON(url.concat(),function (apiData) {
         let timestamps = [];
 
         let thirdChartData = {};
+
+        var thirdChart = new Chart(tctx,{
+                type: 'line',
+                data:{
+                    labels:Object.keys(thirdGraphData).slice(daysToSkip),
+                    datasets: [
+                        //Confirmed
+                        {
+                            label: labels[0],
+                            data:confirmed.slice(daysToSkip),
+                            backgroundColor: colors["confirmed"]
+                        },
+                        //Deaths
+                        {
+                            label: labels[1],
+                            data:deaths.slice(daysToSkip),
+                            backgroundColor: colors["deaths"]
+                        },
+                        //Recovered
+                        {
+                            label: labels[2],
+                            data:recovered.slice(daysToSkip),
+                            backgroundColor: colors["recovered"]
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend:{
+                        display: false,
+                        position: 'bottom'
+                    },
+                    title:{
+                        display: true,
+                        text: 'Cronologia casi per '+topCountry.country
+                    },
+                    animation: {
+                        onComplete: function () {
+                            $(".loader-wrapper").fadeOut("slow");
+                            alert("JHU (our main data provider) no longer provides data for amount of recoveries, and as a result, the API will be showing 0 for this statistic. Apologies for any inconvenience. Hopefully we'll be able to find an alternative data-source that offers this.");
+                        }
+                    }
+                }
+            });
     });
 }
 
-function updateCounters(countryCode){
-    let urlParam = "";
-
-    if(countryCode === "GLOBAL"){
-        urlParam = "latest";
-    }else{
-        urlParam = `locations?country_code=${countryCode}&timelines=false`;
-    }
-
-    $.getJSON(url.concat(urlParam), function (apiData) {
-        $('#infetti').text(apiData.latest.confirmed);
-        $('#deceduti').text(apiData.latest.deaths);
-        $('#guariti').text(apiData.latest.recovered);
-    });
-}
-
+//TODO: Move into update third chart method
 function setThirdGraphData(countryCode) {
     let data = {};
     //Get all provinces IDs that have the country code
