@@ -125,23 +125,26 @@ function updateSecondChart(countryCode){
 
         let orderedLocations = [];
 
-        //If GLOBAL is passed then make a list of most affected countries
+        //If the selected country is the US then we need to group by county for each province
         if(countryCode === "GLOBAL"){
             orderedLocations = sortByCases(groupByProvince(sortByName(apiData.locations)));
             //Pick top 5 countries
             orderedLocations.slice(0, 5).map(location => {
                 secondChartData.locationName.push(location.country);
             });
-
         }
-        //If a country code is passed then make a list of the most affected provinces
-        //If said country doesn't have provinces data then display the country latest with total and an alert
+        //Else we can group by province (or country name if GLOBAL is passed in countryCode) for the other countries (jhu doesn't have individual county data per country)
         else{
-            //TODO: Group by county
             orderedLocations = sortByCases(apiData.locations);
-            //Pick top 5 provinces
+            //Pick top 5 counties
             orderedLocations.slice(0, 5).map(location => {
-                secondChartData.locationName.push(location.county);
+                if(location.county){
+                    secondChartData.locationName.push(location.county);
+                }else if(location.province){
+                    secondChartData.locationName.push(location.province);
+                }else{
+                    secondChartData.locationName.push(location.country);
+                }
             });
         }
 
