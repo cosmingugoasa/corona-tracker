@@ -21,181 +21,27 @@ const colors = {'confirmed': 'Orange', 'deaths': 'Red', 'recovered': 'Green'};
 const labels = ['Confermati', 'Decessi', 'Guariti'];
 
 $(document).ready(function () {
-        updateFirstChart("GLOBAL");
-        updateSecondChart("GLOBAL");
-        updateThirdChart("GLOBAL");
+    updateCounters("GLOBAL");
+    updateFirstChart("GLOBAL");
+    updateSecondChart("GLOBAL");
+    updateThirdChart("GLOBAL");
 });
 
-// $(document).ready(function () {
+function updateCounters(countryCode){
+    let urlParam = "";
 
-//     //Get location based data
-//     $.getJSON(url.concat("locations?timelines=1"), function(data){
-//
-//         overallData = data.latest;
-//
-//         $('#infetti').text(overallData.confirmed);
-//         $('#deceduti').text(overallData.deaths);
-//         $('#guariti').text(overallData.recovered);
-//
-//         $.each(overallData, function (key, value) {
-//             firstGraphData.push(parseInt(value));
-//         });
-//
-//         //Init first graph
-//         var firstChart = new Chart(fctx,{
-//             type: 'pie',
-//             data:{
-//                 datasets: [{
-//                     data: firstGraphData,
-//                     backgroundColor:[colors["confirmed"],colors["deaths"],colors["recovered"]]
-//                 }],
-//                 labels: labels
-//             },
-//
-//             options: {
-//                 responsive: true,
-//                 maintainAspectRatio: false,
-//                 legend:{
-//                     display: false,
-//                     position: 'bottom'
-//                 },
-//                 title:{
-//                     display: true,
-//                     text: 'Casi globali'
-//                 }
-//             }
-//         });
-//
-//         //Start second chart
-//         // locations = data.locations.sort(function (a, b) {
-//         //     if (a.country_code < b.country_code){
-//         //         return -1;
-//         //     } else if( a.country_code > b.country_code){
-//         //         return 1;
-//         //     }else{
-//         //         return 0;
-//         //     }
-//         // });
-//         locations = groupByProvince(locations);
-//
-//         locations = locations.sort(function (a, b) {
-//             //Order descending
-//             return (parseInt(a.latest.confirmed) - parseInt(b.latest.confirmed)) * -1;
-//         });
-//
-//         //Get cases info from top 5 infected countries
-//         locations.slice(0, 5).map(location => {
-//             secondGraphData.countriesLabels.push(location.country);
-//             secondGraphData.confirmed.push(parseInt(location.latest.confirmed));
-//             secondGraphData.deaths.push(parseInt(location.latest.deaths));
-//             secondGraphData.recovered.push(parseInt(location.latest.recovered));
-//         });
-//
-//         //Init second graph
-//         var secondChart = new Chart(sctx,{
-//             type: 'horizontalBar',
-//             data:{
-//                 labels: secondGraphData.countriesLabels,
-//                 datasets: [
-//                     {
-//                         label: labels[0],
-//                         data: secondGraphData.confirmed,
-//                         backgroundColor: colors["confirmed"],
-//                     },
-//                     {
-//                         label: labels[1],
-//                         data: secondGraphData.deaths,
-//                         backgroundColor: colors["deaths"],
-//                     },
-//                     {
-//                         label: labels[2],
-//                         data: secondGraphData.recovered,
-//                         backgroundColor: colors["recovered"],
-//                     },
-//                 ],
-//             },
-//             options: {
-//                 responsive: true,
-//                 maintainAspectRatio: false,
-//                 legend:{
-//                     display: true,
-//                     position: 'bottom'
-//                 },
-//                 title:{
-//                     display: true,
-//                     text: 'Classifica dei contagi'
-//                 }
-//             }
-//         });
-//
-//         //TODO : Fix waiting for getJSON to finish
-//         const topCountry = locations[0];
-//         //thirdGraphData = setThirdGraphData(topCountry.country_code);
-//         setThirdGraphData(topCountry.country_code);
-//
-//         thirdGraphData = setThirdGraphData(topCountry.country_code);
-//
-//         setTimeout(function()
-//         {
-//             //Display 20 recorded days
-//             let confirmed =[];
-//             let deaths = [];
-//             let recovered = [];
-//             $.each(thirdGraphData, function (key, value) {
-//                 confirmed.push(value[0]);
-//                 deaths.push(value[1]);
-//                 recovered.push(value[2]);
-//             });
-//
-//             let daysToSkip = parseInt(confirmed.length) - 20;
-//             var thirdChart = new Chart(tctx,{
-//                 type: 'line',
-//                 data:{
-//                     labels:Object.keys(thirdGraphData).slice(daysToSkip),
-//                     datasets: [
-//                         //Confirmed
-//                         {
-//                             label: labels[0],
-//                             data:confirmed.slice(daysToSkip),
-//                             backgroundColor: colors["confirmed"]
-//                         },
-//                         //Deaths
-//                         {
-//                             label: labels[1],
-//                             data:deaths.slice(daysToSkip),
-//                             backgroundColor: colors["deaths"]
-//                         },
-//                         //Recovered
-//                         {
-//                             label: labels[2],
-//                             data:recovered.slice(daysToSkip),
-//                             backgroundColor: colors["recovered"]
-//                         },
-//                     ],
-//                 },
-//                 options: {
-//                     responsive: true,
-//                     maintainAspectRatio: false,
-//                     legend:{
-//                         display: false,
-//                         position: 'bottom'
-//                     },
-//                     title:{
-//                         display: true,
-//                         text: 'Cronologia casi per '+topCountry.country
-//                     },
-//                     animation: {
-//                         onComplete: function () {
-//                             $(".loader-wrapper").fadeOut("slow");
-//                             alert("JHU (our main data provider) no longer provides data for amount of recoveries, and as a result, the API will be showing 0 for this statistic. Apologies for any inconvenience. Hopefully we'll be able to find an alternative data-source that offers this.");
-//                         }
-//                     }
-//                 }
-//             });
-//         }, 400);
-//     });
-// });
+    if(countryCode === "GLOBAL"){
+        urlParam = "latest";
+    }else{
+        urlParam = `locations?country_code=${countryCode}&timelines=false`;
+    }
 
+    $.getJSON(url.concat(urlParam), function (apiData) {
+        $('#infetti').text(apiData.latest.confirmed);
+        $('#deceduti').text(apiData.latest.deaths);
+        $('#guariti').text(apiData.latest.recovered);
+    });
+}
 
 function updateFirstChart(countryCode){
     let urlParam;
