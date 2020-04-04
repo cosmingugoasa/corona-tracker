@@ -58,11 +58,10 @@ function updateFirstChart(countryCode){
         //Total numbers of confirmed, deaths and recovered
         let firstChartData = [];
         let firstChartTitle;
-
         if(countryCode === "GLOBAL"){
             firstChartTitle = "Casi globali";
         }else{
-            firstChartTitle = `Casi per ${apiData.locations.country}`;
+            firstChartTitle = `Casi per ${apiData.locations[0].country}`;
         }
 
         $.each(apiData.latest, function (key, value) {
