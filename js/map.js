@@ -9,8 +9,7 @@ $(document).ready( function() {
         var country_hovered = $(this).attr('id');
         var infected, deaths, recovered;
 
-
-        //search for complete country name
+        // search for complete country name
         locations.forEach( function (location) {
             if( country_hovered === location.country_code){
                 country_hovered = location.country;
@@ -36,15 +35,11 @@ $(document).ready( function() {
         //get clicked country alpha2 code
         var country_clicked = $(this).attr('id');
 
+        //TODO these updates bug out the charts when hovering over them
         //search for clicked country data
-        locations.forEach( function (location) {
-            if( country_clicked === location.country_code){
-                console.log(location.latest);
-                $('#target_coutry').text(location.country);
-                $('#infetti').text(location.latest.confirmed);
-                $('#deceduti').text(location.latest.deaths);
-                $('#guariti').text(location.latest.recovered);
-            }
-        });
+        updateCounters(country_clicked);
+        updateFirstChart(country_clicked);
+        updateSecondChart(country_clicked);
+        // updateThirdChart(country_clicked);
     });
 });
