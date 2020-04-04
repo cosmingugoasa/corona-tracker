@@ -154,7 +154,7 @@ function updateSecondChart(countryCode){
         if(countryCode === "GLOBAL"){
             secondChartTitle = "Classifica globale dei contagi";
         }else{
-            secondChartTitle = `Casi per ${apiData.locations[0].country}`;
+            secondChartTitle = `Casi per ${orderedLocations[0].country}`;
         }
 
         //Init second graph
