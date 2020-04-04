@@ -207,101 +207,112 @@ function updateThirdChart(countryCode){
 
     //Change api url request based on the countryCode param
     if(countryCode === "GLOBAL"){
-        urlParam = "locations";
+        // urlParam = "locations";
+        urlParam = `locations?source=csbs&country_code=${countryCode}&timelines=true`;
     }
     //If the US is selected we need to change sources to csbs since it has more accurate data
     else if(countryCode === "US"){
-        urlParam = `locations?source=csbs&country_code=${countryCode}&timelines=false`;
+        urlParam = `locations?source=csbs&country_code=${countryCode}&timelines=true`;
     }else{
-        urlParam = `locations?source=jhu&country_code=${countryCode}&timelines=false`;
+        urlParam = `locations?source=jhu&country_code=${countryCode}&timelines=true`;
     }
 
     //Update third chart
-    $.getJSON(url.concat(),function (apiData) {
+    $.getJSON(url.concat(urlParam),function (apiData) {
         let timestamps = [];
-
+        console.log(apiData);
         let thirdChartData = {};
-
-        var thirdChart = new Chart(tctx,{
-                type: 'line',
-                data:{
-                    labels:Object.keys(thirdGraphData).slice(daysToSkip),
-                    datasets: [
-                        //Confirmed
-                        {
-                            label: labels[0],
-                            data:confirmed.slice(daysToSkip),
-                            backgroundColor: colors["confirmed"]
-                        },
-                        //Deaths
-                        {
-                            label: labels[1],
-                            data:deaths.slice(daysToSkip),
-                            backgroundColor: colors["deaths"]
-                        },
-                        //Recovered
-                        {
-                            label: labels[2],
-                            data:recovered.slice(daysToSkip),
-                            backgroundColor: colors["recovered"]
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    legend:{
-                        display: false,
-                        position: 'bottom'
-                    },
-                    title:{
-                        display: true,
-                        text: 'Cronologia casi per '+topCountry.country
-                    },
-                    animation: {
-                        onComplete: function () {
-                            $(".loader-wrapper").fadeOut("slow");
-                            alert("JHU (our main data provider) no longer provides data for amount of recoveries, and as a result, the API will be showing 0 for this statistic. Apologies for any inconvenience. Hopefully we'll be able to find an alternative data-source that offers this.");
-                        }
-                    }
-                }
-            });
-    });
-}
-
-//TODO: Move into update third chart method
-function setThirdGraphData(countryCode) {
-    let data = {};
-    //Get all provinces IDs that have the country code
-    $.getJSON(url.concat("locations?country_code="+countryCode), function (provinces) {
-        //For every province in the country
-        $.each(provinces.locations, function(index, province){
-            //Fetch the province data (which includes the timelines)
-            $.getJSON(url.concat("locations/"+province.id), function(locationObj){
-                //console.log(locationObj);
-                //Loop through the different timelines (confirmed timeline, deaths timeline, recovered timeline)
-                $.each(locationObj.location.timelines, function (type, timelineObj) {
-                    $.each(timelineObj.timeline, function (time, cases) {
-                        time = time.split("T")[0];
-                        if (typeof data[time] === 'undefined'){
-                            //Insert new timeline "node" with 0 confirmed, 0 deaths, 0 recovered
-                            data[time] = [0,0,0];
-                            timestamps.push(time);
-                        }
-                        switch (type) {
-                            case "confirmed": data[time][0] += parseInt(cases);
-                                break;
-                            case "deaths": data[time][1] += parseInt(cases);
-                                break;
-                            case "recovered": data[time][2] += parseInt(cases);
-                                break;
-                        }
+            //For every province in the country
+            $.each(apiData.locations, function(index, province){
+                //Fetch the province data (which includes the timelines)
+                $.getJSON(url.concat("locations/"+province.id), function(locationObj){
+                    //console.log(locationObj);
+                    //Loop through the different timelines (confirmed timeline, deaths timeline, recovered timeline)
+                    $.each(locationObj.location.timelines, function (type, timelineObj) {
+                        $.each(timelineObj.timeline, function (time, cases) {
+                            time = time.split("T")[0];
+                            if (typeof thirdChartData[time] === 'undefined'){
+                                //Insert new timeline "node" with 0 confirmed, 0 deaths, 0 recovered
+                                thirdChartData[time] = [0,0,0];
+                                timestamps.push(time);
+                            }
+                            switch (type) {
+                                case "confirmed": thirdChartData[time][0] += parseInt(cases);
+                                    break;
+                                case "deaths": thirdChartData[time][1] += parseInt(cases);
+                                    break;
+                                case "recovered": thirdChartData[time][2] += parseInt(cases);
+                                    break;
+                            }
+                        });
                     });
                 });
             });
+
+        let confirmed = [];
+        let deaths = [];
+        let recovered = [];
+
+        $.each(thirdChartData, function (key, value) {
+            confirmed.push(value[0]);
+            deaths.push(value[1]);
+            recovered.push(value[2]);
+        });
+
+        let daysToSkip = parseInt(confirmed.length) - 20;
+
+        if(thirdChart){
+            thirdChart.destroy();
+        }
+
+        //Third chart(Line chart with timeline of most infected country or selected country)
+        let tctx = document.getElementById('thirdChart').getContext('2d');
+
+        thirdChart = new Chart(tctx,{
+            type: 'line',
+            data:{
+                labels:Object.keys(thirdChartData).slice(daysToSkip),
+                datasets: [
+                    //Confirmed
+                    {
+                        label: labels[0],
+                        data:confirmed.slice(daysToSkip),
+                        backgroundColor: colors["confirmed"]
+                    },
+                    //Deaths
+                    {
+                        label: labels[1],
+                        data:deaths.slice(daysToSkip),
+                        backgroundColor: colors["deaths"]
+                    },
+                    //Recovered
+                    {
+                        label: labels[2],
+                        data:recovered.slice(daysToSkip),
+                        backgroundColor: colors["recovered"]
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend:{
+                    display: false,
+                    position: 'bottom'
+                },
+                title:{
+                    display: true,
+                    text: `Cronologia casi per ${countryCode}`
+                },
+                animation: {
+                    onComplete: function () {
+                        $(".loader-wrapper").fadeOut("slow");
+                        // alert("JHU (our main data provider) no longer provides data for amount of recoveries, and as a result, the API will be showing 0 for this statistic. Apologies for any inconvenience. Hopefully we'll be able to find an alternative data-source that offers this.");
+                    }
+                }
+            }
         });
     });
-    return data;
 }
 
 function sortByName(locations){

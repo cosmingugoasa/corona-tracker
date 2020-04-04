@@ -2,7 +2,7 @@ $(document).ready( function() {
     updateCounters("GLOBAL");
     updateFirstChart("GLOBAL");
     updateSecondChart("GLOBAL");
-    updateThirdChart("GLOBAL");
+    // updateThirdChart("GLOBAL");
 
     //enable pan&zoom
     var panZoomTiger = svgPanZoom('#svg');
