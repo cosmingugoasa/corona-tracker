@@ -65,7 +65,8 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-let job = new CronJob('0 0 19 * * *', function() {
+let job = new CronJob('0 * * * * *', function() {
+    console.log("initiating mail sender ...");
     //request lates data from api
     request('https://coronavirus-tracker-api.herokuapp.com/v2/latest', {json: true}, function (err, res, body) {
         if(err) {
