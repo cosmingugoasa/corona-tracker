@@ -7,14 +7,9 @@ let locations = [];
 //Single object of data
 let overallData = {};
 
-//First chart (Pie chart with global stats or stats of selected country)
-const fctx = document.getElementById('firstChart').getContext('2d');
-
-//Second chart(Horizontal bar chart with top 5 infected countries)
-const sctx = document.getElementById('secondChart').getContext('2d');
-
-//Third chart(Line chart with timeline of most infected country or selected country)
-const tctx = document.getElementById('thirdChart').getContext('2d');
+let firstChart;
+let secondChart;
+let thirdChart;
 
 const colors = {'confirmed': 'Orange', 'deaths': 'Red', 'recovered': 'Green'};
 
@@ -61,8 +56,15 @@ function updateFirstChart(countryCode){
             firstChartData.push(parseInt(value));
         });
 
+        if (firstChart) {
+            firstChart.destroy();
+        }
+
+        //First chart (Pie chart with global stats or stats of selected country)
+        let fctx = document.getElementById('firstChart').getContext('2d');
+
         //Init chart
-        let firstChart = new Chart(fctx, {
+        firstChart = new Chart(fctx, {
             type: 'pie',
             data:{
                 datasets:[{
@@ -153,8 +155,15 @@ function updateSecondChart(countryCode){
             secondChartTitle = `Casi per ${orderedLocations[0].country}`;
         }
 
+        if (secondChart) {
+            secondChart.destroy();
+        }
+
+        //Second chart(Horizontal bar chart with top 5 infected countries)
+        let sctx = document.getElementById('secondChart').getContext('2d');
+
         //Init second graph
-        let secondChart = new Chart(sctx,{
+        secondChart = new Chart(sctx,{
             type: 'horizontalBar',
             data:{
                 labels: secondChartData.locationName,
