@@ -8,7 +8,7 @@ $(document).ready( function() {
         assignLocations(APIData);
     });
 
-    console.log(locations);
+    // console.log(locations);
 
     //enable pan&zoom
     var panZoomTiger = svgPanZoom('#svg');
