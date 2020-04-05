@@ -207,47 +207,40 @@ function updateThirdChart(countryCode){
 
     //Change api url request based on the countryCode param
     if(countryCode === "GLOBAL"){
-        // urlParam = "locations";
-        urlParam = `locations?source=csbs&country_code=${countryCode}&timelines=true`;
+        urlParam = `locations?source=jhu&timelines=true`;
     }
-    //If the US is selected we need to change sources to csbs since it has more accurate data
-    else if(countryCode === "US"){
-        urlParam = `locations?source=csbs&country_code=${countryCode}&timelines=true`;
-    }else{
+    //parameters for the timeline of a specific country
+    //In this case we do not fetch data from csbs in case US is selected since we do not need a county precision level.
+    //Also this type of precision level can significantly impact the performance
+    else{
         urlParam = `locations?source=jhu&country_code=${countryCode}&timelines=true`;
     }
 
     //Update third chart
     $.getJSON(url.concat(urlParam),function (apiData) {
-        let timestamps = [];
-        console.log(apiData);
         let thirdChartData = {};
-            //For every province in the country
-            $.each(apiData.locations, function(index, province){
-                //Fetch the province data (which includes the timelines)
-                $.getJSON(url.concat("locations/"+province.id), function(locationObj){
-                    //console.log(locationObj);
-                    //Loop through the different timelines (confirmed timeline, deaths timeline, recovered timeline)
-                    $.each(locationObj.location.timelines, function (type, timelineObj) {
-                        $.each(timelineObj.timeline, function (time, cases) {
-                            time = time.split("T")[0];
-                            if (typeof thirdChartData[time] === 'undefined'){
-                                //Insert new timeline "node" with 0 confirmed, 0 deaths, 0 recovered
-                                thirdChartData[time] = [0,0,0];
-                                timestamps.push(time);
-                            }
-                            switch (type) {
-                                case "confirmed": thirdChartData[time][0] += parseInt(cases);
-                                    break;
-                                case "deaths": thirdChartData[time][1] += parseInt(cases);
-                                    break;
-                                case "recovered": thirdChartData[time][2] += parseInt(cases);
-                                    break;
-                            }
-                        });
-                    });
+
+        $.each(apiData.locations, function(id,location){
+            $.each(location.timelines, function (type, timelineObj) {
+                $.each(timelineObj.timeline, function (time, cases) {
+                    //get only the date
+                    time = time.split("T")[0];
+
+                    if (!thirdChartData[time]){
+                        //Insert new timeline "node" with 0 confirmed, 0 deaths, 0 recovered
+                        thirdChartData[time] = [0,0,0];
+                    }
+                    switch (type) {
+                        case "confirmed": thirdChartData[time][0] += parseInt(cases);
+                            break;
+                        case "deaths": thirdChartData[time][1] += parseInt(cases);
+                            break;
+                        case "recovered": thirdChartData[time][2] += parseInt(cases);
+                            break;
+                    }
                 });
             });
+        });
 
         let confirmed = [];
         let deaths = [];
@@ -259,7 +252,15 @@ function updateThirdChart(countryCode){
             recovered.push(value[2]);
         });
 
+        let thirdChartTitle;
+
         let daysToSkip = parseInt(confirmed.length) - 20;
+
+        if(countryCode === "GLOBAL"){
+            thirdChartTitle = `Cronologia globale del contagio (ultimi ${daysToSkip} giorni)`;
+        }else{
+            thirdChartTitle = `Cronologia per ${apiData.locations[0].country} (ultimi ${daysToSkip} giorni)`;
+        }
 
         if(thirdChart){
             thirdChart.destroy();
@@ -302,7 +303,7 @@ function updateThirdChart(countryCode){
                 },
                 title:{
                     display: true,
-                    text: `Cronologia casi per ${countryCode}`
+                    text: thirdChartTitle
                 },
                 animation: {
                     onComplete: function () {

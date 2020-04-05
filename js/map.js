@@ -2,7 +2,7 @@ $(document).ready( function() {
     updateCounters("GLOBAL");
     updateFirstChart("GLOBAL");
     updateSecondChart("GLOBAL");
-    // updateThirdChart("GLOBAL");
+    updateThirdChart("GLOBAL");
 
     //enable pan&zoom
     var panZoomTiger = svgPanZoom('#svg');
@@ -39,11 +39,10 @@ $(document).ready( function() {
         //get clicked country alpha2 code
         var country_clicked = $(this).attr('id');
 
-        //TODO these updates bug out the charts when hovering over them
         //search for clicked country data
         updateCounters(country_clicked);
         updateFirstChart(country_clicked);
         updateSecondChart(country_clicked);
-        // updateThirdChart(country_clicked);
+        updateThirdChart(country_clicked);
     });
 });
