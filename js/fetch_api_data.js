@@ -4,6 +4,7 @@ const url = "https://coronavirus-tracker-api.herokuapp.com/v2/";
 //Array of objects, each object is a location
 let locations = [];
 
+
 //Single object of data
 let overallData = {};
 

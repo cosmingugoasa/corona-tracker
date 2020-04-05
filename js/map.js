@@ -4,6 +4,12 @@ $(document).ready( function() {
     updateSecondChart("GLOBAL");
     updateThirdChart("GLOBAL");
 
+    $.getJSON(url.concat("locations"), function (APIData) {
+        assignLocations(APIData);
+    });
+
+    console.log(locations);
+
     //enable pan&zoom
     var panZoomTiger = svgPanZoom('#svg');
 
@@ -46,3 +52,7 @@ $(document).ready( function() {
         updateThirdChart(country_clicked);
     });
 });
+
+function assignLocations(data){
+    locations = groupByProvince(data.locations);
+}
