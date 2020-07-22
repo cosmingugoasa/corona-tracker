@@ -1,4 +1,6 @@
-# Corona Tracker (WIP)
+# Corona Tracker
+
+https://corona-tracker-unipr.herokuapp.com/
 
 Shows data inherent to the coronavirus spread with an interactive map which can be hovered/clicked for country's specific counter.
 
